@@ -1,0 +1,37 @@
+https://github.com/mrleon9988/test1.git
+
+
+1。进入github帐户，创建一个仓库：test1
+
+2.新建本地仓库文件夹 ：mygit
+
+3.右键：git bash 打开终端
+
+4.git init 
+//初始化本地仓库
+
+5.git add .	
+//“ . ”默认是所有文件，可以指定某个文件库暂存区
+
+6.git commit -m "文件描述"	
+//提交到本地仓库
+
+7.git remote add origin https://github.com/name/仓库名.git	
+//将本地代码仓库关联到 github 上
+//在这一步时如果出现错误：fatal:remote origin already exists那就先输入:git remote rm origin
+
+8.git pull --rebase origin master	
+//将代码由本地仓库上传到 github 远程仓库
+
+9.git push -u origin master 	
+//把当前分支 master 推送到远程，执行此命令后有可能会让输入用户名、密码：
+//执行完之后如果无错误就上传成功了，需要提示的是这里的 master 是 github 默认的分支，
+//如果你本地的当前分支不是 master，就用git checkout master命令切换到master分支，
+//如果你想用本地当前分支上传代码，则把第6步的命令里的 master 切换成你的当前分支名即可。
+
+10.git clone https://github.com/mrleon9988/test1.git
+//git init test && cd test     //新建仓库并进入文件夹
+git config core.sparsecheckout true //设置允许克隆子目录
+echo 'tt*' >> .git/info/sparse-checkout //设置要克隆的仓库的子目录路径   //空格别漏
+git remote add origin git@github.com:mygithub/test.git  //这里换成你要克隆的项目和库
+git pull origin master    //下载
