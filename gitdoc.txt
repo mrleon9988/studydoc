@@ -36,6 +36,10 @@ echo 'tt*' >> .git/info/sparse-checkout //设置要克隆的仓库的子目录�
 git remote add origin git@github.com:mygithub/test.git  //这里换成你要克隆的项目和库
 git pull origin master    //下载
 
+异地拉取更新文件
+1.git pull origin master
+2.git add .
+
 
 github desktop
 
