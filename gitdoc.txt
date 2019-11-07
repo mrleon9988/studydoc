@@ -4,6 +4,11 @@ https://github.com/mrleon9988/test1.git
 1.git pull origin master
 2.git add .
 
+远程删除文件
+1.git rm -r --cached filename
+2.git commit -m ''
+3.git push -u origin master
+
 使用git在本地创建一个项目的过程
 
     $ makdir ~/hello-world    //创建一个项目hello-world
