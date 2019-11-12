@@ -317,6 +317,8 @@ while ( i <= 10 ){ //( i <= 100 )条件表达式；
 
 4.循环里也有操作表达式，完成计数器的更新，防止死循环；i++;
 
+5.循环体的最后，需要加入break 退出整个循环
+
 
 
 ## do while循环解释
@@ -1294,4 +1296,531 @@ fun1();
 
 - JS预解析：会把js里面所有的 var 、funciton 提升到当前作用域的最前面
 - 代码执行：按照代码书写的顺序，从上往下执行
+
+
+
+
+
+
+
+
+
+
+
+# javascript 对象
+
+### 目标
+
+- w才能是对象
+- 创建对象的三种方式
+- new 关键字
+- 遍历对象属性
+
+
+
+
+
+### 什么是对象
+
+在javascript中，对象是组无序的相关**属性**和**方法**的集合，所有的事物都是对象，例如：字符串，数值、数组、函数等。
+
+对象是由属性和方法组成的。
+
+- 属性：事物的特征，在对象中用属性来表示 （常用名词）
+- 方法：事物的行为，在对象中用方法来表示（常动词）
+
+
+
+
+
+### 创建对象的三种方式
+
+##### 1.利用字面量创建对象
+
+对象字面量：就是花括号 { } 里面包含了表达这个具体事物（对象）的属性和方法.
+
+```shell
+var obj = {} ;//创建了个空对象
+var obj = {
+	uname: '李小花',//用逗号隔开
+	age:'18',
+	sex:'男',
+	sayhi:function () {
+		console.log('hi~');
+	}
+}
+//1。里面的属性或者方法，采取键、值对的形式，键名：值
+//2。多个属性或者方法用逗号隔开
+//3。方法冒号后面跟的是一个匿名函数
+//4。调用对象的属性，采取：对象名，属性名
+console.log(obj.uname);
+//5.调用属性的另一种方法：对象名['属性名']
+console.log(obj['age']);
+//6.调用对象里的函数：对象名.函数名 + （）小括号
+obj.sayhi();
+```
+
+
+
+基本使用规范
+
+| 代码格式                   | 使用说明        |
+| -------------------------- | --------------- |
+| console.log(start.name)    | 调用名字属性    |
+| console.log(start['name']) | 调用名字属性    |
+| start.sayhi();             | 调用sayhi方法， |
+
+练习：
+
+```
+var obj = {
+	name:'可可',
+	type:'阿拉斯加犬',
+	age:'5',
+	color:'棕红色',
+	skill:['汪汪汪~','演电影']
+}
+```
+
+
+
+|      |      |
+| ---- | ---- |
+|      |      |
+|      |      |
+|      |      |
+|      |      |
+
+##### 2. 利用 new object 创建对象
+
+```shell
+var obj = new Object();	//创建一个空对象
+//用= 号赋值,';'分号结束语句
+obj.name = '李小花';
+obj.age = '18';
+obj.sex = '男';
+obj.sayhi = function (){
+	console.log('hi~');
+}
+```
+
+
+
+###### 小结
+
+1. 利用 等号 = 赋值的方法，添加对象的属性和方法
+2. 每个属性和方法之间用分号结束
+
+变量、属性、函数、方法的区别
+
+| 标签 | 区别                                                     |
+| ---- | -------------------------------------------------------- |
+| 变量 | 单独声明的值，使用的时候直接写变量名，**单独存的**       |
+| 属性 | **在对象里**的不需要声明，使用的时候必须是 对象.属性     |
+| 函数 | 函数是单独声明，并调用的：函数名（），且是**单独存在**的 |
+| 方法 | **在对象里**面，调用的时候，对象名.方法名()              |
+
+
+
+练习
+
+```shell
+var obj = new Object;
+obj.name = '鸣人';
+obj.age = '18';
+obj.sex = '男';
+obj.skill = function (){
+	console.log('影分身术');
+}
+console.log(obj.name);
+obj.skill();
+```
+
+
+
+##### 3.利用构造函数创建对象
+
+构造函数：是一种特殊的对象，主要用来初始化对象，即为对象成员变量赋初始值 ，它总与new运算符一起使用。我们可以把对象中一些公共的属性和方法抽取出来，然后封闭到这个函数里面。
+
+语法规范
+
+```shell
+//声明一个构造函数
+function 构造函数名 (){
+	this.属性 = 值；
+	this.方法 = function () {}
+}
+
+//调用构造函数
+new 构造函数名();
+```
+
+```shell
+	function Star (name,age,sex){ //这里定义形参
+		this.name = name;	//构造函数里，这里要用分号隔开
+		this.age = age;
+		this.sex = sex;
+		this.sing = function (song){ //定义形参：song
+			console.log(song);//传实参
+		}
+	}
+	//用构造函数创建一个对象
+	var ldh = new Star('刘德华',18,'男');
+	var zxy = new Star('张学友',19,'女');
+	
+	//输出对象
+	console.log(ldh.name);
+	console.log(zxy.age);
+	
+	//调用对象里的方法
+	ldh.sing('忘情水');//赋值实参
+```
+
+练习
+
+```shell
+	function Hero (name,blood,type,attack){
+		this.name = name;
+		this.blood = blood;
+		this.type = type;
+		this.attack = function (tack){
+			console.log(tack);
+		};
+	}
+	var lp = new Hero ('廉颇',500,'力量型');
+	var hb = new Hero ('寒冰',100,'射手');
+	console.log(hb.name+hb.blood+hb.type);
+	hb.attack('远程');
+	lp.attack('近战');
+```
+
+###### 小结
+
+1. 构造函数名字首字母要大写
+2. 构造函数里不需要return 就可以返回结果 
+3. 调用构造函数 必须使用 new
+4. 只要new 构造函数名() 调用函数就创建了一个对象
+5. 属性和方法前面必须添加 this.
+
+
+
+
+
+### new 关键字
+
+
+
+new 在执行时会做四件事情：
+
+1. 在内存中创建一个新的空对象
+2. 让this指向这个新的对象
+3. 执行构造函数里面的代码，给这个新对象添加属性和方法
+4. 返回这个新对象（所以构造函数里面不需要return
+
+
+
+### 遍历对象属性
+
+> 在js里遍历对象，一般采用 for ... in 
+
+
+
+for ... in 语法
+
+```shell
+for (变量 in 对象名) {
+}
+
+如:
+var obj = {
+	name:mrleon,
+	age:18,
+	sex:boy
+}
+
+for (k in obj){
+	console.log(k);		//k 是定义的一个变量名 ,输出结果：属性名
+	console.log(obj[k]);	// obj[k] 输出结果：属性值
+}
+```
+
+for ...in 里面的变量，一般用 k 或者 key
+
+
+
+### 章节作业
+
+1. 创建一个电脑对象，该对象要有颜色、重量、品牌、型号，可以看电影、听音乐、打游戏和敲代码
+
+2. 创建一个按钮对象，该对象中需要包含宽、高、背景颜色和点击行为
+
+3. 创建一个车的对象，该对象要有重量、颜色、牌子、可以载人、拉货和耕田
+
+4. 写一个函数，实现反转任意数组
+
+5. 写一个函数，实现对数字数组的排序
+
+6. 项目练习：做一个简易计算器：
+
+   1.弹窗口显示信息
+
+   2.输入1.加法运算、2.减法运算、3.乘法运算、4.除法运算 、5.退出,6请输入您的选项
+
+
+
+
+
+# javascrip 内置对象
+
+### 目标
+
+1. 能够说出什么是内置对象
+2. 能够根据文档查询指定API的使用方法
+3. 能够使用 Math 对象的常用方法
+4. 能够使用 Date 对象的常用方法
+5. 能够使用 Array 对象的常用方法
+6. 能够使用 String 对象的常用方法
+
+
+
+### 什么是内置对象
+
+
+
+- Javascrip 中的对象分为3种：自定义对象，内置对象、浏览器对象
+- 前面两种对象是 JS 基础内容，属于ECMSCRIPT:第三个**浏览器对象属于 JS 独有的**，也是 JS API。
+- **内置对象**：就是指 JS 语言自带的一些对象，这些对象供开发者使用，并提供了一些常用的，或是最基本而必要的功能（功能和方法）
+- 内置对象最大的优点：就是帮助我们快速开发
+- JAVASCRIPT 提供了多个内置对象：Math, Date，Array，String等
+
+
+
+### 如何查询对象文档
+
+
+
+查询文档，可以通过 MDN / W3C 进行查询 
+
+Mozilla 开发者网络 MDN 提供了有关开放网络技术 Open web 的信息，包括HTML\CSS\万维网，及HTML5应用的API.
+
+MDN: https://developer.mozilla.org/zh-cn
+
+
+
+
+
+### Math 对象
+
+> Math.()
+
+
+
+##### 案例练习
+
+```shell
+function getrandomnum(max,min) {
+	  return Math.floor(Math.random() * (max - min + 1)) + min; //这里是包含了1，10的写法
+}
+
+//定义一个变量接收随机值，并执行随机函数,传入参数为：1~10之间的值
+var randomnum = getrandomnum(1,10);
+
+//开始定义循环逻辑，这里使用while循环实现，只有条件满足时才退出整个程序
+while (true) { // 这里的写法是，只有当为 true时，才会执行循环体
+	//在这里声明一个变量，用于接收用户输入的值 ；
+	var num = prompt('请输入1~10之间任意数，比大小');
+	if ( num > randomnum ){
+		alert('猜大了');
+	} else if (num < randomnum) {
+		alert('猜小了');
+	} else {
+		alert('恭喜你，猜对了');
+		break; //这里要跳转循环
+	}
+}
+```
+
+
+```shell
+	//首先，写好随机值生成的函数
+	function getrandomnum(max,min) {
+		  return Math.floor(Math.random() * (max - min + 1)) + min; //这里是包含了1，10的写法
+	}
+	
+	//定义一个变量接收随机值，并执行随机函数,传入参数为：1~10之间的值
+	var randomnum = getrandomnum(1,10);
+	
+	//开始定义循环逻辑，这里使用while循环实现，只有条件满足时才退出整个程序
+	
+	//声明一个次数变量
+	var i = 1;
+	
+	while ( i <= 3 ) { // 这里的写法是，只有当为 true时，才会执行循环体
+		//在这里声明一个变量，用于接收用户输入的值 ；
+		var num = prompt('请输入1~10之间任意数，比大小');
+		var numtime = i;
+		if ( num > randomnum ){
+			alert('猜大了');
+		} else if (num < randomnum) {
+			alert('猜小了');
+		} else {
+			alert('恭喜你，猜对了');
+			break;
+		}
+		
+		if (i == 3) {
+			alert('3次了');
+		}
+		i++;
+	}
+```
+
+
+
+### Date() 日期对象
+
+> Date() 日期对象 ，是一个**构造函数**，必须使用 new 来调用创建日期对象
+
+
+
+```
+var arr = new Array();	//创建一个数组对象
+var obj = new Date();	//创建一个对象实例
+```
+
+```shell
+//调用date();
+var date = new Date();
+console.log(date);
+```
+
+Date()方法的使用
+
+获取当前时间必须实例化
+
+```
+var now = new Date();
+console.log(now);
+```
+
+Date()构造函数的参数
+
+如果括号里面有时间，就返回参数里面的时间。例如日期格式为字符串'2019-01-01',可以写成new Date('2019-01-01'),或者 new Date('2019/01/01')
+
+
+
+##### 日期格式化
+
+```shell
+var date = new Date();
+console.log(date.getFullyear());	//返回当前日期的年份
+console.log(date.getMonth() + 1);	//默认返回的月份要比当前小1个月，记得要+1
+console.log(date.getDate);	//返回当天是几号
+console.log(date.getDay);	//默认返回的是周1-周6，0代表周日
+
+//如果写成中文格式
+var year = date.getFullyear();
+var month = date.getMonth() + 1;
+var day = date.getDate();
+var week = date.getDay();
+
+	var date = new Date();
+	console.log(date.getFullYear());	//返回当前日期的年份
+	console.log(date.getMonth() + 1);	//默认返回的月份要比当前小1个月，记得要+1
+	console.log(date.getDate());	//返回当天是几号
+	console.log(date.getDay());	//默认返回的是周1-周6，0代表周日
+	
+	//如果写成中文格式
+	var year = date.getFullYear();
+	var month = date.getMonth() + 1;	//记得要+1
+	var dates = date.getDate();
+	
+	//定义星期的中文数组
+	var weekarr = ['星期日','星期一','星期二','星期三','星期四','星期五','星期六']	//默认获取数据是从 0 ,1-6，
+	var week = date.getDay();	//因为没有中文日期的星期转换，只有手动关联对应的星期
+	
+	console.log('今天是：'+ year + '年' + month + '月' + dates + '周' + weekarr[week]);
+	
+	
+	//得到时分秒
+		function gettime() {
+		var time = new Date();
+		var h = time.getHours();
+		h = h < 10 ? '0' + h : h;	//利用三元运算，加个'0'在时间的前面
+		var m = time.getMinutes();
+		m = m < 10 ? '0' + m : m;
+		var s = time.getSeconds();
+		s = s < 10 ? '0' + s : s;
+		
+		return h + ':' + m + ':' + s;
+	}
+	
+	console.log(gettime());
+```
+
+
+
+获取Date 总的毫秒数（时间戳），不是当前时间的毫秒数，是距离1970年1月1日起，到当前过了多少毫秒
+
+1. 通过valueOf   getTime()
+
+   var date = new Date();
+
+   console.log(date.valueOf());
+
+   console.log(date.getTime());
+
+2. 简单的写法 （最常用的写法）
+
+   var date1 = +new Date(); 	//+new Date() 如果不传参，返回**当前**总的毫秒数
+
+   console.log(date1);
+
+3. H5 新增的 
+
+   console.log (Date.now());
+
+##### 案例练习
+
+倒计时
+
+分析思路：
+
+核心算法：用户输入的时间，减去现在的时间，就是剩余时间。
+
+用时间戳来做，用户输入时间总的毫秒数，减去现在的时间总的毫秒数，得到的就是剩余时间总毫秒数
+
+把剩余时间总毫秒数转换为天、时、分、秒（时间戳转换为时分秒）
+
+转换公式如下：
+
+d = parseInt( 总秒数 / 60 / 60 / 24)；	//计算天数
+
+h = parseInt( 总秒数 / 60 60 % 24);	//计算小时
+
+m = parseInt (总秒数 / 60 % 60);	//计算分钟数
+
+s = parseInt (总秒数 % 60)；	//计算当前秒数
+
+
+
+```shell
+	function countDown(time){
+		var nowTime = +new Date();	//返回当前的时间总毫秒
+		var inputTime = +new Date(time);	//用户输入的时间毫秒数，也就是将来的时间
+		var times = (inputTime - nowTime) / 1000;	//1秒等于1000，所以把毫秒数转换为秒
+					//将来的时间 - 当前时间
+		var d = parseInt(times / 60 / 60 / 24);	//得到天数
+		d = d < 10 ? '0' + d : d;
+		var h = parseInt(times / 60 / 60 % 24);	//得到小时
+		h = h < 10 ? '0' + h : h;
+		var m = parseInt(times / 60 % 60);	//得到分钟数
+		m = m < 10 ? '0' + m : m;
+		var s = parseInt(times % 60);	//得到当前的秒
+		s = s < 10 ? '0' + s : s;
+		return d + '天'+ h + '小时'+ m + '分钟'+ s +'秒';
+	}
+	
+	console.log(countDown('2019-11-12 17:00:00'));
+```
 
