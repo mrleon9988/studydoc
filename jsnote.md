@@ -2042,7 +2042,7 @@ document.documentElement;
 
 
 
-#### 操作元素
+### 操作元素
 
 javascript 的 DOM 操作可以改变网页内容、结构 、样式、还可以改变内容的属性等。
 
@@ -2157,7 +2157,183 @@ element.innerHTML	//w3c标准，一般推荐使用这个
 - 如果下午时间打开页面，显示下午好，显示下午的图片
 - 如果晚上时间打开页面，显示晚上好，显示晚上的图片
 
-分析思路：
+```javascript
+<img src="img/morning.jpg" alt="">
+<div></div>
+<script type="text/javascript">
+	//根据不同时间段,显示不同的图片与问候语
+	//1.获取元素
+	var img = document.querySelector('img');
+	var div = document.querySelector('div');
+	//2.注册事件
+	//利用new Date()函数获取当前时间的小时数
+	var date = new Date();
+	var h = date.getHours();
+	//3.创建一个多分支语句
+	if (h < 12){
+		img.src = 'img/morning.jpg';
+		div.innerHTML = '早上好，好好学习';
+	} else if (h < 18) {
+		img.src = 'img/after.gif';
+		div.innerHTML = '下午好，好好学习';
+	} else if(h < 23) {
+		img.src = 'img/night.gif';
+		div.innerHTML = '晚上好，好好学习';
+	}
+</script>
+```
 
-1。。。。。
 
+##### 表单元素的属性操作
+
+
+
+利用 DOM 可以操作如下表单元素的属性
+
+| 元素     | 属性                    |
+| -------- | ----------------------- |
+| type     | 类型                    |
+| value    | 值                      |
+| checked  | 选择状态                |
+| selected | 选中状态                |
+| disabled | 启用状态（true / false) |
+
+**表单里面的值，是通过 value 来改变的**
+
+小案例
+
+```javascript
+<button type="button">按钮</button>
+<input type="" name="" id="" value="还没有点我" />
+<script type="text/javascript">
+	//要求:点击按钮,改变 输入框 里的值
+	//1.获取元素
+	var input = document.querySelector('input');
+	var btn = document.querySelector('button');
+	//2.注册事件
+	btn.onclick = function () {
+		input.value = '被点击了';	//改变input 的值
+		// btn.disabled = true;	//一般这样写
+		this.disabled = true;	//如果只是当前表单,可以改成this
+	}
+</script>
+```
+小案例
+
+```javascript
+//点击眼睛图标，切换input的显示效果,pwd 与 text
+<div class="box">
+	<label>
+		<img src="img/close.png" >
+	</label>
+	<input type="password" name="" id="" value="" />
+</div>
+<script type="text/javascript">
+	var input = document.querySelector('input');
+	var img	= document.querySelector('img');
+	var label = document.querySelector('label');
+	var flag = 1;
+	//2.注册事件
+	label.onclick = function () {
+		if (flag == 1) {
+			img.src = 'img/open.png';
+			input.type = 'text';
+			flag = 0;
+		} else {
+			img.src = 'img/close.png';
+			input.type = 'password';
+			flag = 1;
+		}
+	}
+</script>
+```
+
+
+##### 样式属性操作
+
+可以通过 JS 修改元素的大小、颜色 、位置等 css 样式
+
+- element.style	css行内样式操作
+- element.className 类名样式操作
+
+```javascript
+<div style= 'width:400px;backgroundColor:#ff0000'></div>
+<script type="text/javascript">
+	var div = document.querySelector('div');
+	div.onclick = function () {
+		this.style.backgroundColor = '#ff0000';
+		this.style.width = '400px';
+	}
+```
+注意：
+
+1. JS 里面的样式名采取驼峰命名 比如：fontSize backgroundColor
+2. JS 修改 style 样式操作，产生的是行内样式，直接在元素上添加，权重最高
+
+
+
+小案例
+
+```javascript
+//要求：点击关闭图标，整个box隐藏,
+<div class="box">
+	<div class="code"></div>
+	<i id="close-btn"></i>
+</div>
+<script type="text/javascript">
+		var btn = document.querySelector('#close-btn');
+		var box = document.querySelector('.box');
+		btn.onclick = function () {
+			box.style.display = 'none';
+		}
+</script>
+```
+
+
+小案例
+
+```javascript
+//要求：利用循环，自动依次更换li标签的背景图标
+<div class="box">
+	<ul>
+		<li></li>
+	</ul>
+</div>
+<script type="text/javascript">
+	 var lis = document.querySelectorAll('li');
+	 var spans = document.querySelectorAll('span');
+	 for (var i = 0; i < lis.length; i++){
+		 //new一个变量接收图标的Y坐标值
+		 var index = i * 44;	//因为图标是纵向的，每个图标向下间隔44px
+		 //改变元素背景图的坐标值
+		lis[i].style.backgroundPosition = '0 -'+index+'px';
+		
+	 }
+	 for (var k = 0; k < spans.length; k++){
+		spans[k].innerText = '文字';
+	 }
+	 console.log(spans);
+</script>
+```
+小案例
+
+```javascript
+//要求：焦点的切换状态，输入框里的文本改变内容、样式
+<div class="box">
+	<input value="手机" />
+</div>
+<script type="text/javascript">
+	var text = document.querySelector('input');
+	text.onfocus = function () {
+		if (this.value === '手机') {
+			this.value = '';
+			this.style = 'color:#333';
+		} 
+	}
+	text.onblur = function () {
+			this.value = '手机';
+			this.style = 'color:#999';
+	}
+	
+</script>
+```
