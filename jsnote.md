@@ -1,3 +1,5 @@
+
+
 # 运算符
 
 
@@ -1823,4 +1825,339 @@ s = parseInt (总秒数 % 60)；	//计算当前秒数
 	
 	console.log(countDown('2019-11-12 17:00:00'));
 ```
+
+
+
+
+
+# JavaScript DOM 操作
+
+
+
+### 如何获取DOM
+
+```js
+document.getElementById('元素选择器');
+// id ('idname')
+// class('.idname')
+```
+
+小结：
+
+1.默认文档元素是从上到下开始查找，所以，一般script语法要放在元素下里
+
+```javascript
+<div>
+<script>
+<body>	
+```
+
+2.get 获得 element 元素 by 通过 驼峰命名法
+
+3.参数 id 是大小写敏感的字符串
+
+4.返回的是一个元素对象 object 对象
+
+5.console.dir(dom) 可以打印返回的元素对象，能更好的查看里面的**属性和方法**
+
+
+
+#### 根据标签名获取 
+
+
+
+> 使用 getElementsByTagName() 方法可以返回带有指定标签名的对象集合
+
+
+
+```javascript
+	<ul>
+			<li>content</li>
+			<li>content</li>
+			<li>content</li>
+		</ul>
+	<script type="text/javascript">
+	var lis = document.getElementsByTagName('li');	//获取到所有的 li 标签的元素
+	</script>
+```
+
+//1.返回的是获取过来元素对象的集合,以伪数组的形式存储的
+			var lis = document.getElementsByTagName('li');
+			console.log(lis);
+			//如何要获取第几个元素
+			console.log(lis[0]);
+	
+
+#### 根据 ID 名获取
+
+```javascript
+		<ul>
+			<li>content</li>
+			<li>content</li>
+			<li>content</li>
+		</ul>
+		<ol id='ol'>
+			<li>content</li>
+			<li>content</li>
+			<li>content</li>
+		</ol>
+
+		//2.如果要依次打印里面的元素对象,可以采取遍历的方法
+		for ( var i = 0; i < lis.length; i++){
+			console.log(lis[i]);
+		}
+		
+		//3.如果页面中只有一个 li 返回的还是伪数组
+		
+		//4.如果页面中没有这个元素,返回的还是空的伪数组
+		
+		//5.如果有多个相同元素,但处理不同父元素下,获取 方法使用 document.getElementsByTagName('标签名')
+		//  且父元素必须是指定的单个元素
+		var ol = document.getElementsByTagName('ol');
+		console.log(ol[0]);
+		
+		// 一般使用简单的方法获取 
+		var ol = document.getElementsByTagName('ol');	 //这里的ol 是id名
+		console.log(ol.getElementsByTagName('li')); 	//这里的ID 是 ol 下的 li 元素
+```
+
+
+#### 根据 class 类名获取
+
+​		
+
+```javascript
+document.getElementsByClassName('类名');
+//根据类名返回元素对象集合,这是HTML5新增的方法 ,要注意兼容性
+```
+
+
+
+#### querySelector () 方法获取 
+
+```javascript
+document.querySelector();
+//这是HTML5新增的一种类选择器方法，返回的是**第一个**元素对象，切记：( )里加符号，class  = ' . ' 加点， id = ' # ',加井号;
+```
+
+```javascript
+document.querySelector('.box');	//返回第一个class 类名的元素对象
+document.querySelector('#box');	//返回第一个id 类名的元素对象
+```
+
+```javascript
+document.querySelectorAll('.box');
+//后面加 All 可以获取到所有相同选择器的元素对象
+```
+
+
+
+#### 获取特殊元素 body,html
+
+
+
+- 获取body元素
+
+```javascript
+var body =  document.body;
+// 这个元素是可以获取到的
+```
+
+
+
+- 获取 html元素
+
+```javascript
+var html = document.html;
+// 这个元素用这个方法是获取不到的
+```
+
+```javascript
+document.documentElement;
+//这个方法可以获取 hmtl 元素对象；
+```
+
+
+
+
+
+### 事件基础
+
+#### 执行事件的三要素步骤
+
+1. 获取事件源
+2. 注册事件(绑定事件)
+3. 添加事件处理程序（采取函数赋值形式）
+
+
+
+> 点击一个按钮，弹出对话框
+
+```javascript
+	<button id="btn">点击按钮</button>
+	
+<script type="text/javascript">
+	// 点击按钮,弹出对话框
+	//1.事件有三部分组成:事件源/事件类型/事件处理程序 ,也称事件三要素
+	//1.1 事件源,事件被触发的对象 ,谁 ————按钮
+	var btn = document.getElementById('btn');
+	//1.2 事件类型 ,如何触发——什么事件——比如鼠标点击(onclick)
+	//1.3 事件处理程序 通过一个函数赋值的方式 完成
+	btn.onclick = function(){
+		alert('我是弹框');
+	}
+</script>
+```
+
+
+> 点击元素，打印信息
+
+```javascript
+	<div>123</div>
+
+	<script type="text/javascript">
+		// 1. 获取事件源
+		var div = document.querySelector('div');
+		// 2. 注册事件(绑定事件)
+		// 3. 添加事件处理程序（采取函数赋值形式）
+		div.onclick = function() {
+			console.log('我被选中了');
+		}
+	</script>
+```
+
+
+#### 常见的鼠标事件
+
+| 鼠标事件    | 触发条件     |
+| ----------- | ------------ |
+| onclick     | 鼠标点击     |
+| onmouseover | 鼠标经过     |
+| onmouseout  | 鼠标移出     |
+| onfocus     | 获得鼠标焦点 |
+| onblur      | 失去焦点     |
+| onmousemove | 鼠标移动     |
+| onmouseup   | 鼠标弹起     |
+| onmousedown | 鼠标按下     |
+
+
+
+#### 操作元素
+
+javascript 的 DOM 操作可以改变网页内容、结构 、样式、还可以改变内容的属性等。
+
+
+
+
+
+##### 改变元素内容
+
+
+
+```javascript
+element.innerText	//修改里面的文字
+```
+
+从起始位置到终止位置的内容，但它会去除html标签，同时空格和换行也会去掉
+
+```javascript
+element.innerHTML	//w3c标准，一般推荐使用这个
+```
+
+起始位置到终止位置的全部内容，包括html标签，同时保留空格和换行
+
+
+
+案例练习
+
+```javascript
+	<button type="button">显示系统时间</button>
+	<div></div>
+	<p></p>
+	<script type="text/javascript">
+        // 要求：点击按钮，div里显示系统当前时间
+		// 1. 获取事件源
+		var btn = document.querySelector('button');
+		var div = document.querySelector('div');
+		// 2. 注册事件(绑定事件)
+		btn.onclick = function () {
+			div.innerText = '2019-09-09';	//改变元素的内容
+		}
+		// 3. 添加事件处理程序（采取函数赋值形式）
+		
+		// 要求:页面加载时,就显示当前系统时间
+		// 已经编辑好的获取系统时间的函数
+		function getDate() {
+			var date = new Date();
+			var year = date.getFullYear();
+			var month = date.getMonth() + 1;	//记得要+1
+			var dates = date.getDate();
+			
+			//定义星期的中文数组
+			var weekarr = ['星期日','星期一','星期二','星期三','星期四','星期五','星期六']	//默认获取数据是从 0 ,1-6，
+			var week = date.getDay();	//因为没有中文日期的星期转换，只有手动关联对应的星期
+			
+			return '今天是：'+ year + '年' + month + '月' + dates + '周' + weekarr[week];
+		}
+		
+		//1.获取元素
+		var p = document.querySelector('p');
+		//2.注册事件
+		p.innerText = getDate();		//改变元素的内容
+	</script>
+```
+
+
+##### 改变元素的属性
+
+常见的属性操作
+
+| 标签属性  | 说明                     |
+| --------- | ------------------------ |
+| innerText | 元素的文字内容           |
+| innerHTML | 元素的HTML标签内容       |
+| src       | 元素的路径               |
+| href      | 元素的链接地址           |
+| id        | 元素的id类名             |
+| alt       | 图片元素的alt说明文字    |
+| title     | 图片元素鼠标移入时的文字 |
+
+
+
+```javascript
+	<button type="button" id="ldh">刘德华</button>
+	<button type="button" id="zxy">张学友</button>
+	<img src="img/hd_img1.jpg"	alt="" title="刘德华">
+	<script type="text/javascript">
+		//要求:点击明星按钮,切换不同的图片
+		//1.获取元素
+		var ldh = document.getElementById('ldh');
+		var zxy = document.getElementById('zxy');
+		var img = document.querySelector('img');
+		
+		//2.注册事件
+		ldh.onclick = function () {
+			img.src = 'img/hd_img1.jpg';
+			img.title = '刘德华';
+		}
+		zxy.onclick = function () {
+			img.src = 'img/hd_img2.jpg';
+			img.title = '张学友';
+		}
+	</script>
+```
+
+
+##### 案例练习
+
+> 分时显示不同图片，显示不同问候语
+
+- 根据不同时间，页面显示不同图片，同时显示不同的问候语
+- 如果上午时间打开页面，显示上午好，显示上午的图片
+- 如果下午时间打开页面，显示下午好，显示下午的图片
+- 如果晚上时间打开页面，显示晚上好，显示晚上的图片
+
+分析思路：
+
+1。。。。。
 
