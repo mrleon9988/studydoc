@@ -2587,3 +2587,133 @@ for (var i = 0; i < allcd.length; i++) {
 }
 
 ```
+
+
+
+
+
+###### 练习：切换 tabs 标签
+
+```javascript
+		//1.获取标签、内容区元素
+		var tabs = document.querySelectorAll('.h-nav');
+		var items = document.querySelectorAll('.item');
+		// console.log(tabs);
+		// console.log(con);
+		for (var i = 0; i < tabs.length; i++) {
+			tabs[i].setAttribute('index', i);
+			tabs[i].onclick = function() {
+				for (var i = 0; i < tabs.length; i++) {
+					tabs[i].className = ''; //先清除所有的样式
+				}
+				this.className = 'active'; //再给当前的赋于样式
+
+				//2.下面的内容区，跟着变化 而变化 
+				var index = this.getAttribute('index');
+				for (var i = 0; i < items.length; i++) {
+					//先干掉所有的
+					items[i].style.display = 'none';
+				}
+				//留下当前的
+				items[index].style.display = 'block';
+			}
+		}
+```
+
+
+### 自定义属性操作
+
+​	有的时候，可以设置一个些元素的自定义属性来操作DOM，为了只在前端页面里使用而提出的一个种方法。
+
+| 语句                                      | 作用                                                         | 兼容性 |
+| ----------------------------------------- | ------------------------------------------------------------ | ------ |
+| elements.setAttribute( 'name',' value ' ) | 设置属性名、值                                               | IE.H5  |
+| elements.getAttribute( ' name' )          | 获取属性的值                                                 |        |
+| elements.dataset                          | 获取属性的值,包含了所有以 data-name的自定义属性              | H5新增 |
+| elements.dataset['name']                  |                                                              |        |
+| elements.dataset.listName                 | 如果属性名有多个，如data-list-name,那在获取的时候要把名字以驼峰命名法连起来 |        |
+| elements.dataset['listName']              |                                                              |        |
+
+
+
+```javascript
+	<div class="dv" getTime="20" data-time='20' data-list-name='30'></div>
+	<script type="text/javascript">
+		var div = document.querySelector('.dv');
+		console.log(div.getAttribute('getTime'));
+		console.log(div.dataset);
+		console.log(div.dataset.time);
+		console.log(div.dataset.listName);
+```
+
+
+
+
+### 节点操作
+
+获取元素通常使用两种方式：
+
+| 利用DOM获取元素                 | 利用节点层级关系获取元素   |
+| ------------------------------- | -------------------------- |
+| document.getElementById()       | 利用父、子、兄节点关系获取 |
+| document.getElementsByTagName() | 逻辑性强，但是兼容性稍差   |
+| document.querySelector等        | children 、Parent          |
+| 逻辑性不强、繁琐                |                            |
+
+两种方法都可以使用，但是节点操作相对更简单些
+
+
+
+#### parentNode
+
+```javascript
+<div class="box">
+	<div class="son">btn</div>
+</div>
+var btn = document.querySelector('.btn')	//首先获取目标子节点
+var box = btn.parentNode	//获取目标的父节点，
+console.log(box)
+console.log(btn.parentNode)
+```
+
+注意：节点获取只能得到离目标最近的父级节点，如果找不到返回的是 null
+
+
+
+#### childrenNodes\children
+
+```javascript
+console.log(box.children);
+可以获取子元素节点，推荐使用这个方法
+
+console.log(box.childNodes);
+可以获取子级的所有元素节点，包含元素、文本等，一般不使用这个方法
+```
+
+#### 在子级里获取第几个子节点
+
+```javascript
+element.firstChild	//获取第一个，
+element.lastChild	//获取最后一个
+但是得到的是文本元素
+```
+
+```javascript
+element.firstElementChild
+element.lastElementChild
+//这样获取到的才是子元素节点
+
+//注意：IE9以上才兼容
+```
+
+解决方法：
+
+```javascript
+element.children[0];
+//通过索引号直接获取，第一个肯定是 0
+
+如果在不确定总个数的情况下，获取最后一个
+//element.children[element.children.length - 1];
+```
+
+这个方法没有兼容性问题！
