@@ -2027,7 +2027,7 @@ document.documentElement;
 ```
 
 
-#### 常见的鼠标事件
+### 常见的鼠标事件
 
 | 鼠标事件    | 触发条件     |
 | ----------- | ------------ |
@@ -2249,6 +2249,9 @@ element.innerHTML	//w3c标准，一般推荐使用这个
 ```
 
 
+
+
+
 ##### 样式属性操作
 
 可以通过 JS 修改元素的大小、颜色 、位置等 css 样式
@@ -2336,4 +2339,251 @@ element.innerHTML	//w3c标准，一般推荐使用这个
 	}
 	
 </script>
+```
+
+
+
+###### 小结：
+
+1. 如果样式修改较少，可以采取操作行内样式的方式，此方便法的 CSS 权重最高
+2. 如果样式修改较多，可以采取操作类名更改的方式，此方法可直接修改 class id 类
+3. class id 因为是个保留字，因此使用className 来操作元素类名属性
+4. className 全直接更改元素的类名，会覆盖原来的类名
+5. 如果要保留原先的class类名，添加一个新的class 类，需要在赋值 的时候加上空格
+
+```javascript
+	<div class="firstClass"></div>
+	<script type="text/javascript">
+		var div = document.querySelector('div');
+		div.onclick = function () {
+			div.className = 'addClass';
+			div.className = 'firstClass addClass'
+		}
+	</script>
+```
+
+
+练习
+
+​		//要求：判断输入框输入的数字长度,并给出相对应的提示信息
+
+```javascript
+	<div class="box">
+		<input type="password" class="ipt">
+		<p class="tips">请输入6~10位数的密码</p>
+	</div>
+	<script type="text/javascript">
+		//1.数字长度要求6-10位
+		//2.失去焦点的时候显示信息
+		//3.准备3个提示小图标
+		//1.获取元素
+		var ipt = document.querySelector('.ipt');
+		var tips = document.querySelector('.tips');
+		ipt.onblur = function() {
+			if (this.value.length < 6 || this.value.length > 10) {
+				tips.className = 'tips error';
+				tips.innerHTML = '输入的数字错误';
+			} else {
+				tips.className = 'tips right';
+				tips.innerHTML = '输入正确';
+			}
+		}
+	</script>
+```
+
+
+##### 作业
+
+1. 用户名 输入框 默认提示文字显示隐藏效果
+
+   ```javascript
+   	<input type="" name="" id="ipt" value="用户名/邮箱号" />
+   	<script type="text/javascript">
+   		// 用户名 输入框 默认提示文字显示隐藏效果
+   		var ipt = document.querySelector('input');
+   		ipt.onfocus = function () {
+   			this.value = '';
+   			this.className = 'ipt ipts';
+   		}
+   		ipt.onblur = function () {
+   			this.value = '用户名/邮箱号';
+   			this.className = 'ipt'
+   		}
+   	</script>
+   ```
+
+2. 顶部通栏广告 点击关闭效果
+
+   ```javascript
+   	<div class="topAd">
+   		<i class="closeBtn"></i>
+   	</div>
+   	<script type="text/javascript">
+   		// 顶部通栏广告 点击关闭效果
+   		var btn = document.querySelector('.closeBtn');
+   		var adbox = document.querySelector('.topAd');
+   			btn.onclick = function () {
+   				adbox.style = 'display:none';
+   			}
+   	</script>
+   ```
+
+3. 下拉菜单 鼠标移入显示,移出隐藏效果
+
+   ```javascript
+   	<div class="navbox">
+   		<a href="" class="navbar">menu</a>
+   		<div class="showmenu">
+   			<ul>
+   				<li><a href=""></a>menu</li>
+   				<li><a href=""></a>menu</li>
+   				<li><a href=""></a>menu</li>
+   			</ul>
+   		</div>
+   	</div>
+   	<script type="text/javascript">
+   		var m1 = document.querySelector('.navbar');
+   		var m2 = document.querySelector('.showmenu');
+   		m1.onmouseover = function () {
+   			m2.style.display = 'block';
+   		}
+   		m2.onmouseout = function () {
+   			this.style.display = 'none';
+   		}
+   	</script>
+   ```
+
+4. 开关灯 点击按钮切换背景色
+
+   ```javascript
+   	<button type="button">开/关按钮</button>
+   	<script type="text/javascript">
+   		// 开关灯 点击按钮切换背景色
+   		var btn = document.querySelector('button');
+   		var bd = document.body;
+   		var flag = 0;
+   		btn.onclick = function () {
+   			if(flag == 0){
+   				bd.style.background = '#222222';
+   				flag = 1;
+   			} else if(flag == 1){
+   				bd.style.background = '#fff';
+   				flag = 0;
+   			}
+   		}	
+   	</script>
+   ```
+
+#### 排他思想
+
+| 元素  |       |       |       |
+| ----- | ----- | ----- | ----- |
+| 按钮1 | 按钮2 | 按钮3 | 按钮4 |
+
+如果有同一组元素,我们只想切换选中某一个元素的时候,需要用到循环的排他思想算法
+
+步骤:
+
+1. 选择所有元素,清除样式或状态
+2. 给当前选中的元素符加样式或状态
+3. **注意执行顺序不能错**,要从上向下依次执行
+
+
+
+案例
+
+```javascript
+	<div class="box">
+		<button>按钮1</button>
+		<button>按钮2</button>
+		<button>按钮3</button>
+		<button>按钮4</button>
+	</div>
+	<script type="text/javascript">
+		var btns = document.getElementsByTagName('button');
+		for (var i = 0; i < btns.length; i++) {
+			btns[i].onclick = function() {
+				for (var i = 0; i < btns.length; i++) {
+					btns[i].style.backgroundColor = '';
+				}
+			this.style.backgroundColor = 'red';
+			}
+		}
+	</script>
+```
+###### 练习
+
+```javascript
+	//切换皮肤效果,点击预览图,指定的元素跟着切换图片
+	<div class="box">
+		<img src="img/hd_img1.jpg" alt="">
+		<img src="img/hd_img2.jpg" alt="">
+		<img src="img/hd_img3.jpg" alt="">
+		<img src="img/hd_img4.jpg" alt="">
+	</div>
+	<div class="showimg"></div>
+	<script type="text/javascript">
+		var imgs = document.querySelector('.box').querySelectorAll('img');
+		var show = document.querySelector('.showimg');
+		// console.log(imgs);
+		for (var i = 0;i<imgs.length;i++){
+			imgs[i].onclick = function () {
+				show.style.background = 'url('+this.src+')';	//指定切换下面的图
+				// document.body.style.background = 'url('+this.src+')'; //指定切换body背景图
+			}
+		}
+	</script>
+```
+练习
+
+```javascript
+//要求:鼠标经过/移出表格行的时候,切换背景色样式	
+<script type="text/javascript">
+		//1.获取 元素
+		var trs = document.querySelector('tbody').querySelectorAll('tr');
+		for (var i = 0; i < trs.length; i++) {
+			trs[i].onmouseover = function() {
+				this.className = 'bg';
+			}
+			trs[i].onmouseout = function () {
+				this.className = '';
+			}
+		}
+	</script>
+```
+另一种实现思路,可以指定  tr  的 :hover 效果
+
+
+
+###### 练习:全选 与 反选
+
+```javascript
+//要求:当选中全选按钮时,下面其它的选择框都跟着切换选中状态,并且,其它选择框可以单独操作.	
+<script type="text/javascript">
+		//1.获取 元素
+		var choseBtn = document.getElementById('choseAll');
+		var allcd = document.querySelector('tbody').querySelectorAll('input');
+		choseBtn.onclick = function () {
+			for (var i = 0;i<allcd.length;i++){
+				//this.checked .是当前全选按钮的选中状态,复选 框返回的是布尔型 true 或 false
+				allcd[i].checked = this.checked;	//全选框选中,就把状态同样赋给其它选择框
+			}
+		}
+	</script>
+
+//要求2:判断其它按钮只要有一个没有选中,上面的全选按钮就不选中,满足条件就选中
+for (var i = 0; i < allcd.length; i++) {
+	//获取当前按钮的选中状态
+	allcd[i].onclick = function() { //只要所有的小按钮都选中了,全选按钮就是选 中状态
+		flag = true; //声明一个变量,控制全选按钮是否选中
+		for (var i = 0; i < allcd.length; i++) {
+			if (!allcd[i].checked) { //如果当前的按钮没有选中,[ 这里采用了取反的算法 ]
+				flag = false; //默认肯定是小按钮都没有选中,所以全选按钮默认也是未选中
+				break; //这里打断,是为了不让这个判断一直循环检测,选中1个打断一次
+			}
+		}
+		choseBtn.checked = flag; //如果满足条件,全选 按钮就是true;
+	}
+}
+
 ```
