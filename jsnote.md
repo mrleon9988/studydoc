@@ -1527,7 +1527,7 @@ new 在执行时会做四件事情：
 
 
 
-for ... in 语法
+##### for ... in 语法
 
 ```shell
 for (变量 in 对象名) {
@@ -2717,3 +2717,339 @@ element.children[0];
 ```
 
 这个方法没有兼容性问题！
+
+
+
+##### children 练习
+
+```javascript
+//要求:鼠标移入一级菜单,显示下拉菜单,移出隐藏下拉菜单
+<script>
+	// 1. 获取元素
+	var nav = document.querySelector('.nav');
+	// 得到4个小li
+	var lis = nav.children;
+	// 2.循环注册事件
+	for (var i = 0; i < lis.length; i++) {
+		lis[i].onmousemove = function () {
+			this.children[1].style.display = 'block';
+		}
+		lis[i].onmouseout = function () {
+				this.children[1].style.display = 'none';
+			}
+	}
+</script>
+```
+
+
+
+### 创建\添加节点
+
+```javascript
+node.createElement ('li');
+```
+
+1.创建节点元素
+
+```javascript
+var li = document.createElement('li');
+
+2.从后面添加节点
+node.appendChild(child) node 是父级, chiild 是子级,从后面追加元素,类似于数组中的push
+
+var ul = document.querySelector('ul');
+
+ul.appendChild(li);
+
+3.从前面添加节点
+var lis = documents.createElement('li');
+ul.insertBefor(lis,ul.children[0]);
+              (目标,父级的第一个子级前面)
+```
+
+
+
+基本步骤:
+
+1. 创建元素: createElement ( ' ' );
+
+2. 添加元素位置: 
+
+   向后添加:appendChild(创建的元素)
+
+   向前添加:insertBefor ( 创建的元素变量,父级的第 [ 0 ] 个位置开始 )
+
+	<body>
+		<ul class="nav">
+			<li>
+				<a href="">aaa</a>
+				<div>
+					<p>Lorem ipsum dolor sit.</p>
+				</div>
+			</li>
+		</ul>
+	</body>
+	<script type="text/javascript">
+		//获取要添加目标的父级元素
+		var par = document.querySelector('ul');
+		//2.创建子级元素
+		var sonli = document.createElement('div');
+		//3.添加到指定位置
+		par.appendChild(sonli);
+```javascript
+<body>
+	<ul class="nav">
+		<li>
+			<a href="">aaa</a>
+			<div>
+				<p>Lorem ipsum dolor sit.</p>
+			</div>
+		</li>
+	</ul>
+</body>
+<script type="text/javascript">
+	//获取要添加目标的父级元素
+	var par = document.querySelector('ul');
+	//2.创建子级元素
+	var sonli = document.createElement('div');
+	//3.添加到后面的位置
+	par.appendChild(sonli);
+	//4.添加到前面的位置
+	par.insertBefore(sonli,par.children[0]);
+					//元素后面跟一个逗号
+```
+**注意:这样的写法一次只能添加一个,下面的不会执行**
+
+
+
+#### 练习:简单对话框
+
+```javascript
+	<div class="container">
+		<!-- 文本框 -->
+		<textarea rows="" cols=""></textarea>
+		<!-- 按钮 -->
+		<button type="button">发布</button>
+		<!-- 对话li标签 -->
+		<ul>
+		</ul>
+	</div>
+
+</body>
+<script type="text/javascript">
+	//获取元素
+	var btn = document.querySelector('button');
+	var text = document.querySelector('textarea');
+	var ul = document.querySelector('ul');
+	//注册事件
+	//输入信息,点击按钮,创建li标签,把信息赋值到li标签,添加到ul里
+	btn.onclick = function() {
+		if (text.value == '') {
+			alert('内容为空,请输入');
+			return;
+		} else {
+			var li = document.createElement('li');
+            //赋值给Li
+			li.innerHTML = text.value;
+			//这是从后面添加
+			// ul.appendChild(li);
+			//这是从前面添加
+			ul.insertBefore(li, ul.children[0]);
+			//提交后清空文本框内容
+			text.value = '';
+		}
+	}
+</script>
+```
+
+
+### 删除节点
+
+```javascript
+node.removeChild(父元素.children[第几个])
+```
+
+node.removeChild(child) 方法从 DOM 中删除一个子节点,返回删除的节点;
+
+		<div class="container">
+			<button type="button">按钮</button>
+			<ul>
+				<li>一</li>
+				<li>二</li>
+				<li>三</li>
+			</ul>
+		</div>
+	</body>
+	<script type="text/javascript">
+		//获取父元素
+		var ul = document.querySelector('ul');
+		var btn = document.querySelector('button');
+		// node.removeChild(父元素.children[第几个])
+		btn.onclick = function() {
+			if (ul.children.length === 0) {
+				this.disable = true;
+			} else {
+				ul.removeChild(ul.children[0]);
+			}
+		}
+	</script>
+
+
+练习2
+
+	<script type="text/javascript">
+		//获取元素
+		var btn = document.querySelector('button');
+		var text = document.querySelector('textarea');
+		var ul = document.querySelector('ul');
+		//注册事件
+		//输入信息,点击按钮,创建li标签,把信息赋值到li标签,添加到ul里
+		btn.onclick = function() {
+			if (text.value == '') {
+				alert('内容为空,请输入');
+				return;
+			} else {
+				var li = document.createElement('li');
+				//赋值给Li
+				li.innerHTML = text.value + "<a href='javascript:;'>删除</a>"; //创建一个删除按钮在后面
+				//这是从后面添加
+				// ul.appendChild(li);
+				//这是从前面添加
+				ul.insertBefore(li, ul.children[0]);
+				//提交后清空文本框内容
+				text.value = '';
+	
+				//每条留言后面增加一个删除按钮
+				//删除元素,删除的是当前链接的li 该元素的父级
+				var as = document.querySelectorAll('a'); //获取所有的删除a 标签
+				
+				for (var i = 0; i < as.length; i++) {
+					as[i].onclick = function() {
+						// node.removeChild(父元素.children[第几个])
+						ul.removeChild(this.parentNode);
+						//删除的是li 当前a所在li this.parentNode
+					}
+				}
+			}
+		}
+	</script>
+
+
+
+
+### 复制节点
+
+```
+node.cloneNode()
+```
+
+node.cloneNode() 方法返回调用该 方法的节点的一个副本.也称为克隆节点、拷贝节点
+
+
+
+注意：
+
+1.如果**括号**参数为**空或才false**，则是浅拷贝，即只克隆复制节点本身，不克隆里面子节点（内容）
+
+2.括号里参数：true   false/空
+
+
+
+		<div class="container">
+			<ul>
+				<li>1</li>
+				<li>2</li>
+				<li>3</li>
+			</ul>
+		</div>
+	</body>
+	<script type="text/javascript">
+		//1。首先获取父元素node.cloneNode()
+		var ul = document.querySelector('ul');
+		//2.复制子节点元素
+		//   目标           复制
+		var newli = ul.children[0].cloneNode();
+		//向后添加
+		ul.appendChild(newli);
+		//向前添加
+		// ul.insertBefore(newli,ul.children[0]);
+	</script>
+
+
+### 动态表格的生成与操作
+
+```javascript
+<body>
+		<table cellspacing="0">
+			<thead>
+				<tr>
+					<th>姓名</th>
+					<th>科目</th>
+					<th>成绩</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+			<tbody>
+
+			</tbody>
+		</table>
+	</body>
+	<script type="text/javascript">
+		// 1.先准备好学生的数据,创建对象数据组 var data = [1,2,3];
+		var datas = [{
+			name: '张小三',
+			subject: 'HTMLCSS',
+			score: 100,
+		}, {
+			name: '李狗蛋',
+			subject: 'HTMLCSS',
+			score: 96,
+		}, {
+			name: '王二麻',
+			subject: 'HTMLCSS',
+			score: 90,
+		}, {
+			name: '周扒皮',
+			subject: 'HTMLCSS',
+			score: 85,
+		}, {
+			name: '赵小红',
+			subject: 'HTMLCSS',
+			score: 76,
+		}];
+
+		//2.向tbody里创建行,利用for循环读取数组的长度
+		var tbody = document.querySelector('tbody');
+		for (var i = 0; i < datas.length; i++) {
+			//创建tr行
+			var tr = document.createElement('tr');
+			//插入到tbody里
+			tbody.appendChild(tr);
+
+			//行里面创建td 单元格,数量取决于每个对象里的属性个数,遍历对象用for...in方法
+			// for (变量 in 对象名) {	}
+			for (var k in datas[i]) {
+				//1.创建单元格,
+				var td = document.createElement('td');
+				//2.把对象里的属性值,赋值给td
+				td.innerHTML = datas[i][k]; //datas[i]的[i]是第几个属性,[k]是第几个的属性值
+				tr.appendChild(td);
+			}
+
+			//创建有删除按钮的单元格
+			var td = document.createElement('td');
+			td.innerHTML = '<a href="javascrpit:;">删除</a>';
+			tr.appendChild(td);
+
+		}
+		//按钮可以删除关联的tr行
+		var as = document.querySelectorAll('a');
+		for (var i = 0; i < as.length; i++) {
+			as[i].onclick = function() {
+				// ul.removeChild(this.parentNode);这里找的关系 是爸爸的爸爸
+				tbody.removeChild(this.parentNode.parentNode);
+			}
+		}
+	</script>
+```
+
