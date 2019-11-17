@@ -1079,7 +1079,7 @@ console.log(arr1);
 
 
 
-###### 练习3 
+###### 练习3 判断闰年
 
 > 利用函数判断闰年
 
@@ -1341,7 +1341,7 @@ fun1();
 
 对象字面量：就是花括号 { } 里面包含了表达这个具体事物（对象）的属性和方法.
 
-```shell
+```
 var obj = {} ;//创建了个空对象
 var obj = {
 	uname: '李小花',//用逗号隔开
@@ -2779,7 +2779,32 @@ ul.insertBefor(lis,ul.children[0]);
 
    向前添加:insertBefor ( 创建的元素变量,父级的第 [ 0 ] 个位置开始 )
 
+	
+	
+	```
+	1. <body>
+	
+	   	<ul class="nav">
+	   		<li>
+	   			<a href="">aaa</a>
+	   			<div>
+	   				<p>Lorem ipsum dolor sit.</p>
+	   			</div>
+	   		</li>
+	   	</ul>
+	
+	   </body>
+	
+	   <script type="text/javascript">
+	   	//获取要添加目标的父级元素
+	   	var par = document.querySelector('ul');
+	   	//2.创建子级元素
+	   	var sonli = document.createElement('div');
+	   	//3.添加到指定位置
+	   	par.appendChild(sonli);
+	
 	<body>
+	
 		<ul class="nav">
 			<li>
 				<a href="">aaa</a>
@@ -2788,37 +2813,28 @@ ul.insertBefor(lis,ul.children[0]);
 				</div>
 			</li>
 		</ul>
+	
 	</body>
+	
 	<script type="text/javascript">
 		//获取要添加目标的父级元素
 		var par = document.querySelector('ul');
 		//2.创建子级元素
 		var sonli = document.createElement('div');
-		//3.添加到指定位置
+		//3.添加到后面的位置
 		par.appendChild(sonli);
-```javascript
-<body>
-	<ul class="nav">
-		<li>
-			<a href="">aaa</a>
-			<div>
-				<p>Lorem ipsum dolor sit.</p>
-			</div>
-		</li>
-	</ul>
-</body>
-<script type="text/javascript">
-	//获取要添加目标的父级元素
-	var par = document.querySelector('ul');
-	//2.创建子级元素
-	var sonli = document.createElement('div');
-	//3.添加到后面的位置
-	par.appendChild(sonli);
-	//4.添加到前面的位置
-	par.insertBefore(sonli,par.children[0]);
-					//元素后面跟一个逗号
-```
-**注意:这样的写法一次只能添加一个,下面的不会执行**
+		//4.添加到前面的位置
+		par.insertBefore(sonli,par.children[0]);
+						//元素后面跟一个逗号
+	
+	
+	```
+	
+	
+	
+	**注意:这样的写法一次只能添加一个,下面的不会执行**
+
+
 
 
 
@@ -3052,4 +3068,976 @@ node.cloneNode() 方法返回调用该 方法的节点的一个副本.也称为�
 		}
 	</script>
 ```
+
+
+
+
+
+### 三种创建元素的区别
+
+
+
+1.document.write()   创建元素，如果页面文档流加载完，再调用此方法，页面会被重绘
+
+```
+var btn = document.querySelector('button')
+
+btn.onclick = function (){
+
+document.write('<div>123</div>div>');
+}
+```
+
+
+
+2.innerHTML 创建元素
+
+innerHTML,是将内容写入某个DOM节点，不会导致页面全部重绘
+
+innerHTML 创建多个元素效率更高（在不拼接字符串的情况下，采取数组形式拼接），但结构稍微复杂。
+
+
+
+3.document.createElement()  创建元素
+
+createElement() 创建多个元素效率稍低一点点，但是结构更清晰
+
+
+
+总结：不同浏览器下，innerHTML 效率要比 createElement 高
+
+
+
+### DOM 重点核心总结
+
+关于DOM操作，主要有创建、增、删、改、查、属性操作、事件操作
+
+
+
+#### 创建
+
+1. document.write
+
+2. innerHTML
+
+3. createElement
+
+   
+
+#### 增
+
+1. appendChild：向后添加
+2. insertBefore：向前添加
+
+
+
+#### 删
+
+removeChild
+
+
+
+#### 改
+
+1. 主要修改dom的元素属性，dom元素的内容，属性、表单的值等
+2. 修改元素属性：src  href  title等
+3. 修改普通元素内容：innerHTML   innerText
+4. 修改表单元素：value  type   disabled等
+5. 修改元素样式：style   className
+
+
+
+#### 查
+
+1. ###### 主要获取查询 dom 的元素
+
+2. DOM提供的API方法：getElementById  getElementsByTagName，古老用法，不太推荐
+
+3. H5提供的新方法：querySelector   querySelectorAll 推荐使用
+
+4. 利用节点操作：父parentNode   子children  兄previousElementSibling  nextElementSibling
+
+
+
+#### 属性操作
+
+主要针对自定义属性
+
+1. setAttribute ：设置dom的新属性值
+2. getAttribute：得到dom的新属性值
+3. removeAttribute：移除新属性
+
+
+
+#### 事件操作
+
+主要给元素注册事件，采取 事件源——事件类型 = 事件处理程序 
+
+| 鼠标事件    | 触发条件     |
+| ----------- | ------------ |
+| onclick     | 鼠标点击     |
+| onmouseover | 鼠标经过     |
+| onmouseout  | 鼠标移出     |
+| onfocus     | 获得鼠标焦点 |
+| onblur      | 失去焦点     |
+| onmousemove | 鼠标移动     |
+| onmouseup   | 鼠标弹起     |
+| onmousedown | 鼠标按下     |
+
+
+
+# JS的高级事件
+
+
+
+### 注册事件（绑定事件）
+
+**传统注册方式**
+
+1. 利用on 开头的事件
+
+2. ```
+   <button onclick = "alert('hi~')"></button>button>
+   ```
+
+3. btn.onclick = function(){}
+
+4. 特点：注册事件的唯一性
+
+5. 同一个元素同一个事件只能设置一个处理函数，最后注册的处理函数将会覆盖前面的。
+
+
+
+**方法监听注册方式**
+
+1. w3c标准 推荐方法
+2. addEvenlistener() 它是一个方法
+3. IE9前的IE不支持，可以使用attachEvent() 代替
+4. 特点：同一个元素同一个事件可以注册多个监听器
+5. 按注册顺序依次执行
+
+
+
+### addEventlistener 事件监听方式
+
+```
+evenTarget.addEventlistener(type,listener[,useCapture])
+```
+
+eventTarget.addEventlistener()方法将指定的监听器注册到eventTarget(目标对象)上，当该对象触发指定的事件时，就会执行事件处理函数。
+
+该方法接收三个参数：
+
+- type：事件类型字符串，比如click  mouseover  注意这里不带 on
+
+- listener：function：可以写在里面，也可以写在外面，调用时输入函数名，不带小括号
+
+- useCapture：可选参数，是一个布尔值 ，默认是false
+
+  
+
+
+
+```
+<button type="button" class="innerbtn">按钮</button>
+<script type="text/javascript">
+			//事件监听器
+				//1。获取元素
+				var btn = document.querySelector('button');
+				//2。注册事件
+				btn.addEventListener('click',function(){
+					alert('hello');
+				});
+</script>
+```
+
+
+
+### 删除事件（解绑事件）
+
+1.传统解绑方法：divs[0].onclick = null; 赋值为空
+
+2.H5新解绑方法：divs[1].removeEventListener('click',fn); 函数要写在外面，
+
+
+
+```
+<body>
+		<div>1</div>
+		<div>2</div>
+		<div>3</div>
+	</body>
+	<script type="text/javascript">
+		//获取 所有div元素
+		var divs = document.querySelectorAll('div');
+		//第1种兼容较好的老方法
+		divs[0].onclick = function () {
+			alert('11');
+			//弹一次后就移除该函数
+			divs[0].onclick = null;
+		}
+		
+		//第2 种新的方法
+		divs[1].addEventListener('click',fn)
+		//事件函数要写在外面，在小括号里调用，注意在调用时不用加小括号
+		function fn() {
+			alert(22);
+			divs[1].removeEventListener('click',fn);
+		};
+		
+		//第3种，针对IE8以下的方法
+		divs[1].attachEvent('click',fn1);
+		function fn1() {
+			alert(22);
+			divs[1].detachEvent('click',fn1);
+		};
+	</script>
+```
+
+
+
+### 事件对象
+
+
+
+> eventTarget.onclick = function(**event**)  {}
+>
+> eventTarget.addEventListener('click',funciton(**event**) {} )
+>
+> //这个event 就是事件对象，一般可以简写 **e**  或  **evt**
+
+简单理解：事件发生后，跟事件相关的一系列信息数据的集合都放到这个对象里，这个对象就是事件对象event,它有很多属性和方法。打印event可以查看详细属性。
+
+
+
+		<div>1</div>
+	</body>
+	<script type="text/javascript">
+		var div = document.querySelector('div');
+		div.onclick = function (evt) {
+			console.log(evt);
+			
+			// console.log(window.event);//这是兼容ie8以下的写法
+			
+			//解决方案：
+			evt = evt || window.event
+			console.log(evt)
+		}
+		
+		div.addEventListener('click',function (e) {
+			console.log(e);
+		})
+	</script>
+
+
+
+### 阻止事件冒泡的两种方式
+
+事件冒泡：开始时最具体的元素接收，然后逐级向上传播到DOM最顶层节点。
+
+事件冒泡本身的特征，会带来的坏处，也会带来的好处，需要灵活掌握。
+
+1。标准写法：利用事对象里面的 stopPropagation ()  方法
+
+```
+		<div class="father">
+			<div class="son"></div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		//阻止冒泡，dom推荐的标准 stopPropagtion()
+		var son = document.querySelector('.son');
+		var father = document.querySelector('.father');
+		
+		son.addEventListener('click',function (e) {
+			alert('son');
+			e.stopPropagation();
+		},true);
+		
+		father.addEventListener('click',function () {
+			alert('father');
+		});
+		
+	</script>
+```
+
+
+
+### 事件委托（代理、委派）
+
+场景描述：
+
+```
+<ul>
+	<li>我的一个元素</li>
+	<li>我的一个元素</li>
+	<li>我的一个元素</li>
+	<li>我的一个元素</li>
+	<li>我的一个元素</li>
+</ul>
+```
+
+**点击每个  li  都会弹出对话框，以前需要给每个 li 注册事件，很麻烦，而且访问DOM的次数有5次，这就会延长页面的交互就绪时间。**
+
+这样的情况就可以通过**事件委托**来解决：
+
+事件委托的原理：
+
+不是每个子节点单独设置事件监听器，而是事件监听器设置在父节点上，然后利用冒泡原理影响设置每个子节点。
+
+场景案例：给 ul 注册点击事件，然后利用事件对象的 target 来找到当前点击的 li ,因为点击 li ，事件会冒泡到 ul 上，ul 有注册事件，就会触发事件监听器
+
+
+
+**事件委托的作用**
+
+我们只操作一次DOM，就可以解决子节点重复事件的性能影响。
+
+```
+		<ul>
+			<li>我的一个元素</li>
+			<li>我的一个元素</li>
+			<li>我的一个元素</li>
+			<li>我的一个元素</li>
+			<li>我的一个元素</li>
+		</ul>
+	</body>
+	<script type="text/javascript">
+		//事件委托的核心原理，给父节点添加监听器，利用事件冒泡影响每一个子节点
+		//1.演示效果：点击每个li 弹个对话框
+		var ul = document.querySelector('ul');
+		ul.addEventListener('click',function (e) {
+			// alert('我是一个元素');
+			//也可以改变每个li 的样式操作,
+			e.target.style.backgroundColor = 'blue';
+		});
+	</script>
+```
+
+
+
+
+
+### 常用的鼠标事件
+
+
+
+1.禁止鼠标右键菜单: ' contextmenu '
+
+```
+document.addEventListener('contextmenu',function (e) {
+			e.preventDefault();// 这是阻止事件的规定语法
+		})
+```
+
+2.禁止鼠标选中：' selectstart '
+
+```
+document.addEventListener('selectstart',function (e) {
+			e.preventDefault();// 这是阻止事件的规定语法
+		})
+```
+
+
+
+### 鼠标事件对象
+
+**event** 对象代表事件的状态，跟事件相关的一系列信息的集合，现阶段我们主要是用鼠标事件对象MouseEvent  和键盘事件对象 KeyboardEvent。
+
+| 鼠标事件对象 | 说明                                    |
+| ------------ | --------------------------------------- |
+| e.clientX    | 返回鼠标相对于浏览器窗口可视区的 X 坐标 |
+| e.clientXY   | 返回鼠标相对于浏览器窗口可视区的 Y 坐标 |
+| e.pageX      | 返回鼠标相对于文档页面的 X 坐标         |
+| e.pageY      | 返回鼠标相对于文档页面的 Y 坐标         |
+| e.screenX    | 返回鼠标相对于电脑屏幕的 X 坐标         |
+| e.screenY    | 返回鼠标相对于电脑屏幕的 Y 坐标         |
+
+
+
+##### 案例练习：跟随鼠标的天使
+
+思路分析：
+
+1. 鼠标不断移动，使用鼠标移动事件：mousemove
+2. 在页面中移动，给document注册事件
+3. 图片要移动距离，而且不占位置，使用绝对定位
+4. 核心原理：每次鼠标移动，获取新的鼠标坐标，把这个x y的值 做为图片的，top left 的值 就可以移动图片
+
+```
+		<style type="text/css">
+			img {
+				position: absolute;
+			}
+		</style>
+	</head>
+	<body>
+		<img src="../img/angel.gif">
+	</body>
+	<script type="text/javascript">
+		var pic = document.querySelector('img');
+		document.addEventListener('mousemove', function(e) {
+			var x = e.pageX;
+			var y = e.pageY;
+			pic.style.left = x + 'px';
+			pic.style.top = y + 'px';
+		})
+	</script>
+```
+
+
+
+
+
+### 常用的键盘事件
+
+事件除了使用鼠标触发，还可以使用键盘触发。
+
+| 键盘事件  | 触发条件                                                     |
+| --------- | ------------------------------------------------------------ |
+| onkeyup   | 某个键盘按键被松开时触发                                     |
+| onkeydown | 某个键盘按键被按下时触发                                     |
+| onkeyress | 某个键盘按键被按下时触发（但不识别功能键 如ctrl  shift 箭头等 |
+
+document.onkeyup = function(){}
+
+document.addEventListener('keyup',function())
+
+
+
+执行顺序是：keydown -> keypress -> keyup
+
+
+
+注意：
+
+keydown  keyup 不区分字母大小写，keypress 区分
+
+实际开发中，更多的使用keydown  keyup 它们能识别所有键
+
+可以通过ASCII 码值 区别判断按下的键是不是要求的。
+
+
+
+案例练习：
+
+按下  s  键 ，输入框获取 焦点
+
+	<body>
+		<input type="" name="" id="" value="" />
+	</body>
+	<script type="text/javascript">
+		var search = document.querySelector('input');
+		document.addEventListener('keyup',function (e) {
+			if(e.keyCode === 83){
+				search.focus();
+			}
+		})
+	</script>
+
+
+案例练习：
+
+输入数字，显示更大的同步数字框
+
+		<div class="wrap">
+			<div class="con"></div>
+			<input type="" name="" id="key" value="" />
+		</div>
+	</body>
+	<script type="text/javascript">
+		var con = document.querySelector('.con');
+		var input = document.querySelector('input');
+		input.addEventListener('keyup', function(e) {
+			if (this.value == '') {
+				con.style.display = 'none';
+			} else {
+				con.style.display = 'block';
+				con.innerHTML = this.value;
+			};
+		})
+		//如果失去焦点，变隐藏上面的提示框
+		input.addEventListener('blur',function(){
+			con.style.display = 'none';
+		});
+	</script>
+
+
+
+
+
+# JavaScript BOM 操作
+
+### BOM概述：
+
+> BOM (Browser Object Model) **浏览器对象模型**，它提供了独立于内容而与**浏览器窗口进行交互**的对象，其核心对象是**window**
+>
+> BOM 由一系列相关的对象构成，并且每个对象都提供了很多方法与属性。
+>
+> BOM 缺乏标准，javascript 语法的标准化组织是ECMA，DOM 的标准化组织是W3C，BOM 最初是NETSCAPE 浏览器标准的一部分，**估兼容性比较差**。
+
+
+
+BOM 的构成
+
+window 包含以下以象：**document  location  navigation  screen  history**
+
+**window 对象是浏览器的顶级对象**，它具有双重角色。
+
+它是 js 访问浏览器窗口的一个接口
+
+它是一个全局对象。定义在全局作用域中的变量、函数都会变成window对象的属性和方法。
+
+一般我们在调用的时候可以省略window，比如：alert(); 完整 写法是 window.alert();
+
+**注意：window 下的一个特殊属性 winodw.name** ，这个name 尽量不要使用.
+
+
+
+### window 对象的常见事件
+
+#### 1.窗口加载事件
+
+```
+传统方式
+wnidow.onload = function (){}
+
+H5方式
+window.addEventListener('load',function(){});
+```
+
+window.load ：是窗口（页面）加载事件，当文档内容完全加载完成，会触发该事件（包括图片、脚 本文件、css文件）等，就调用的处理函数 。
+
+注意：
+
+1. 有了window.onload 就可以把js 代码写到页面元素的任意位置，或者引入js文件
+2. window.onload 传统注册事件方式只能写一次，只会执行最后面的一次。
+3. window.addEventListener 则没有限制 
+
+
+
+另一种预加载 事件方法：**DOMContenLoaded**
+
+```
+document.addEventListener('DOMContenLoaded',function(){});
+```
+
+该事件触发时，只会预先 DOM 元素加载完成渲染，不包括：css 图片 flash 等等。
+
+比如：页面里的图片很多的情况下，从用户访问到onload 触发可能 会要较长时间，此时用DOMContenLoaded 方法，就比较好，**预先把元素框架渲染完成**，再去加载其它图片元素。
+
+
+
+#### 2.调整窗口大小事件
+
+```
+window.onresize = function(){}
+
+window.addEventListener('resize',function(){});
+```
+
+注意：
+
+只要窗口大小发生像素变化，就会触发这个事件
+
+我们经常利用这个事件完成响应式布局，window.innerWidth / innerHeight 当前屏幕的宽度
+
+```
+		//当窗口发生改变，div元素隐藏或显示 
+		<div class="container">
+		</div>
+		<script type="text/javascript">
+		window.addEventListener('load',function () {
+			var div = document.querySelector('div');
+			window.addEventListener('resize',function () {
+				if(window.innerWidth >= 800){
+					div.style.display = 'block';
+				} else {
+					div.style.display = 'none';
+				}
+			})
+		})
+		</script>
+```
+
+
+
+#### setTimeout () 定时器
+
+```
+1.window.setTimeout (function(),延时时间毫秒值);
+```
+
+
+
+```
+setTimeout(function () {
+	console.log('时间到');
+},2000);
+```
+
+```
+// 可以先声明一个函数，然后在计时器里调用
+function callback() {
+	console.log('我来啦');
+}
+setTimeout(callback, 3000);
+```
+
+```
+var timer1 = setTimeout(callback, 3000);
+//第1个3秒执行
+var timer2 = setTimeout(callback, 5000);
+//第2个5秒执行
+```
+
+
+
+注意：
+
+1. 这个window在调用的时候可以省略
+2. 这个延时时间单位是毫秒，但是可以省略，如果省略默认的是 **0**
+3. 这上调用函数可以直接写函数 ，还可以写  函数名 ，或者采取字符串'函数名()'的形式，第3种不推荐
+4. 因为定时器可能 有很多，所以我们经常经定时器赋值 给一个标识符。
+
+
+##### 案例练习
+
+5秒后自动关闭广告
+
+```
+		<div class="container">
+			<img src="img/morning.jpg" class="ad">
+		</div>
+		<script type="text/javascript">
+			var ad = document.querySelector('.ad');
+			setTimeout(function(){
+				//执行程序直接写在计时器里
+				ad.style.display = 'none';
+			},5000);
+```
+
+
+
+
+#### 停止 setTimeout 定时器
+```
+window.clearTimeout (timeoutID)
+```
+
+
+
+clearTimeout()方法取消了先前通过调用 setTimeout() 建立 的定时器。
+
+
+
+**注意：**
+
+- window 可以省略
+
+- 里面的参数就是定时器的标识符,就是要停止 ‘哪个定时器’ 的意思
+
+
+```
+		<div class="container">
+			<img src="img/morning.jpg" class="ad">
+			<!-- 停止按钮 -->
+			<button>停止</button>
+		</div>
+		<script type="text/javascript">
+			var ad = document.querySelector('.ad');
+			var stopbtn = document.querySelector('button');
+			var timer1 = setTimeout(function(){
+				//执行程序直接写在计时器里
+				ad.style.display = 'none';
+			},5000);
+			
+			//停止定时器
+			stopbtn.addEventListener('click',function () {
+				console.log('停止了');
+				clearTimeout(timer1);
+			})
+		</script>
+```
+
+
+
+#### setInterval () 定时器
+
+```
+window.setInterval(回调函数，[间隔的毫秒数]);
+```
+
+**setInterval() 方法重复调用一个函数，每隔这个时间，就去调用1次这个回调函数**
+
+
+```
+setInterval(function () {
+	console.log('输出');	//每隔1秒输出1次
+},1000);
+```
+
+
+
+
+
+案例练习：倒计时
+```
+		<div class="container">
+			<span class="hour">1</span>
+			<span class="min">2</span>
+			<span class="sec">3</span>
+		</div>
+		<script type="text/javascript">
+			var hour = document.querySelector('.hour');
+			var min = document.querySelector('.min');
+			var sec = document.querySelector('.sec');
+			
+			var inputTime = +new Date('2019-11-17 18:00:00'); // 返回的是用户输入时间总的毫秒数：就是预计结束的时间
+			countDown();
+			setInterval(countDown,1000);
+			//时间获取函数 
+			function countDown() {
+			    var nowTime = +new Date(); // 返回的是当前时间总的毫秒数
+			    var times = (inputTime - nowTime) / 1000; // times是剩余时间总的秒数 
+			    var h = parseInt(times / 60 / 60 % 24); //时
+			    h = h < 10 ? '0' + h : h;
+			    hour.innerHTML = h; // 把剩余的小时给 小时黑色盒子
+			    var m = parseInt(times / 60 % 60); // 分
+			    m = m < 10 ? '0' + m : m;
+			    min.innerHTML = m;
+			    var s = parseInt(times % 60); // 当前的秒
+			    s = s < 10 ? '0' + s : s;
+			    sec.innerHTML = s;
+			}
+		</script>
+```
+
+
+
+#### 停止setInterval() 定时器
+
+```
+		<div class="container">
+			<button type="button" class="star">开启</button>
+			<button type="button" class="stop">停止</button>
+		</div>
+		<script type="text/javascript">
+			var star = document.querySelector('.star');
+			var stop = document.querySelector('.stop');
+			//要先声明一个传递回调函数的变量
+			var timer = null;
+			
+			//注册事件
+			star.addEventListener('click',function () {
+			timer = setInterval(function () { //这里把回调函数传到全局变量
+					console.log('hello');
+				},1000);
+			})
+			
+			stop.addEventListener('click',function(){
+				clearInterval(timer);//这里就可以写明停止的事件函数
+			})
+		</script>
+```
+
+案例练习：发送短信倒计时
+
+
+```
+		<div class="container">
+			手机号：<input type="text" class="iptNum">
+			<button type="button" class="sendBtn">发送</button>
+		</div>
+		<script type="text/javascript">
+			var btn = document.querySelector('button');
+			var time = 3;//初始化计时数字变量
+
+			btn.addEventListener('click', function() {
+				btn.disabled = true;
+				var timer = setInterval(function() {
+					if (time == 0) {//计时数字满足条件后
+						clearInterval(timer);//停止
+						btn.disabled = false;//恢复按钮
+						btn.innerHTML = '发送';//改变文字
+					} else {
+						btn.innerHTML = '还剩下' + time + '秒'; //动态提示信息
+						time--;循环递减
+					}
+				},1000);
+			});
+		</script>
+```
+
+
+
+### this 的指向问题
+
+this 一般情况下 this 的最终指向的是那个**调用它的对象**
+
+1.**全局作用域** 或者 普通函数中 this 指向全局对象 window(定时器里面的this 指向window)
+
+```
+console.log(this);
+function fn(){
+console.log(this);
+}
+window.fn();	//这里完整的写法,可以看出是this 是指向了window
+-----------
+window.setTimeout(function(){
+	console.log(this);
+},1000);	//这里的this 也是指向window
+```
+
+
+2.**方法调用中**,谁调用,this就指向谁
+
+```
+var o = {
+	sayhi:function(){
+		console.log(this);	//这里的this,是指向了 o,由这个变量 o 去调用的
+	}
+}
+
+```
+
+
+3.**构造函数** 中 this 指向构造函数的实例
+
+```
+function Fun(){
+	console.log(this);	//这里的this 指向是fun 实例对象
+}
+
+var fun = new Fun();	//只要是new 的都是一个实例对象 
+```
+
+
+
+
+
+### JS的执行机制
+
+js 为了解决单线程 执行效率的问题,利用多核cpu 的计算能力,HTML5 提出WEB WORKER 标准,允许javacript 脚本创建多个线程 .于是,JS中出现了**同步**和**异步**.
+
+```
+//这个执行顺序是什么呢,
+			console.log(1);
+			
+			setTimeout(function () {
+				console.log(3);
+			},1000)
+			
+			console.log(2);
+
+//结果是:1 2  3,
+
+```
+
+**执行机制分析**:
+
+JS 在执行多任务的时候,会把执行 分类进入两大区域内:主要执行栈、任务队列里,
+
+| 主线程执行栈          | 任务队列 |
+| ------------------- | -------- |
+| console.log (1)     | fn       |
+| setTimeout (fn , 0) |          |
+| console.log (2)     |          |
+
+首先，把有回调函数的任务，分到**任务队列**里，然后开始主要执行栈，并把任务队列的结果，**放到执行栈**的最后面。
+
+
+
+1.先执行**执行栈中的同步任务**
+
+2.异常任务（回调函数）放入任务队列中
+
+3.等待执行栈中的所有同步任务执行完毕，系统就会按次序 读取 **任务队列**中的异常任务，于是被读取的异常任务结束等待状态 ，进入 s执行栈，开始执行。
+
+```
+			console.log(1);
+			
+			setTimeout(function () {
+				console.log(3);
+			},0)
+			
+			console.log(2);
+```
+这个案例的执行结果是：1 2 3;
+
+
+```
+console.log(1);
+document.onclick = function () {
+	console.log('click');
+}
+console.log(2);
+setTimeout (function () {
+	console.log(3);
+},3000)
+```
+
+
+
+> 如果页面中出现了多个异常任务，结果还是和执行机制一样，但如果有类似等待用户点击后再执行的任务，会进入事件循环的情况，就是每次执行完了，任务清空，再次触发 再走一遍smrmh机制。比如：可以重复用按钮执行任务的场景 。
+
+
+
+
+
+### loaction 对象
+
+> window 对象给我们提供了一个**location 属性**用于**获取或设置窗体的URL**,并且**可以用于解析URL**，因为这个属性**返回的是一个对象**，所以我们将这个属性也称为 location 对象 。
+> 
+
+
+location 对象的属性
+
+
+| location	  | 返回值	    |
+| ----------- | --------- |
+| location.href	| 获取或者设置整个URL |
+| location.host | 返回主机（域名)     |
+| location.port | 返回端口号，如果未写返回空字符串 |
+| location.pathname | 返回路径 |
+| location.search | 返回参数 |
+|location.hash | 返回片断 #后面内容 常见于链接 描点操作 |
+
+
+
+练习1：5秒自动跳转网址
+
+
+
+```
+<div class="container">
+	<button type="button">跳转</button>
+	<div class="tips"></div>
+</div>
+<script type="text/javascript">
+		var btn = document.querySelector('button');
+		var div = document.querySelector('.tips');
+		
+		btn.addEventListener('click',function () {
+			location.href = 'https://www.baidu.com';
+		})
+		//声明数字变量
+		var time = 5;
+		// setInterval(fn,1000);
+		function fn() {
+			setInterval(function () {
+				if(time == 0) {
+					location.href = 'https://www.123.com';
+				}else{
+					div.innerHTML = ''+time+'秒倒计时跳转网址';
+					time--;
+				}
+			},1000)
+		}
+</script>
+
+```
+
+
+
 
