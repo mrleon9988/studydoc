@@ -1643,7 +1643,7 @@ MDN: https://developer.mozilla.org/zh-cn
 
 
 
-### Math 对象
+#### Math 对象
 
 > Math.()
 
@@ -1711,7 +1711,7 @@ while (true) { // 这里的写法是，只有当为 true时，才会执行循环
 
 
 
-### Date() 日期对象
+#### Date() 日期对象
 
 > Date() 日期对象 ，是一个**构造函数**，必须使用 new 来调用创建日期对象
 
@@ -4335,3 +4335,150 @@ offset 系列常用属性
 | element.scrollWidth  | 返回自身实际的宽度,包含padding,内容,不含边框,不带单位 |
 | element.scrollHeight | 返回自身实际的高度,包含padding,内容,不含边框,不带单位 |
 
+##### 练习，滚动改变侧栏的位置
+```
+<div class="contaier">
+			<div class="bannr1"></div>
+			<div class="bannr2"></div>
+			<div class="bannr3">banner3</div>
+			<div class="bannr4">main</div>
+			<div class="bannr5"></div>
+		</div>
+			<div class="sliderbar">
+				<span>back</span>
+			</div>
+	</body>
+	<script type="text/javascript">
+		//1.获取slide 
+		var slide = document.querySelector('.sliderbar');
+		var banner3	= document.querySelector('.bannr3');
+		var main = document.querySelector('.bannr4');
+		var goback = document.querySelector('span');
+		var mainTop = main.offsetTop;
+		//这个TOP值就是目标距离 
+		var bannertop = banner3.offsetTop;
+		//slide滚动到位置时，固定不跳的数值.
+		var sliderTop = slide.offsetTop - bannertop;
+		// console.log(sliderTop);
+		// console.log(banner3.offsetTop);
+		//2.添加页面滚动事件 scroll
+		document.addEventListener('scroll',function () {
+			// console.log(window.pageYOffset);
+			if(window.pageYOffset >=bannertop){
+				slide.style.top = sliderTop + 'px';
+				slide.style.position = 'fixed';
+			} else {
+				slide.style.top = '360px';
+				slide.style.position = 'absolute';
+			}
+			if(window.pageYOffset >= mainTop){
+				goback.style.display = 'block';
+			}else{
+				goback.style.display = 'none';
+			}
+		})
+	</script>
+```
+
+​	
+
+
+
+### 小结
+三大系列总结
+1. offset 系列经常用于获得元素位置 offsetTop  offsetLeft
+2. client 系列经常用于获得元素大小 clientWidth ClienHeight
+3. scroll 系列经常用于获得滚动距离 scrollTop scrollLeft
+
+
+
+### mouseover 与 mouseenter 区别
+
+mouseenter 鼠标事件
+
+- 当鼠标移动到元素上时就会触发mouseenter 事件
+- 类似mouseover,它们两者之间的差别是：
+- mouseover 鼠标经过自身盒子会触发 ，经过子盒子还会触发。
+- mouseenter **只会经过自身盒子触发** 
+- 之所以这样，就是因为mouseenter不会冒泡
+
+
+
+### 动画函数封装
+
+> 核心原理：通过定时器 seInterval()不断移动盒 子位置
+
+实现步骤：
+- 获得盒子当前位置
+- 让盒子在当前位置加1个移动距离
+- 利用定时器不断重复这个操作
+- 加一个结束定时器的条件
+- 注意此元素需要添加定位，i才能使用element.style.left
+
+###### 练习1：移动盒子
+
+```
+		<div class="box"></div>
+		<script type="text/javascript">
+			// 实现步骤：
+			// - 获得盒子当前位置
+			// - 让盒子在当前位置加1个移动距离
+			// - 利用定时器不断重复这个操作
+			// - 加一个结束定时器的条件
+			// - 注意此元素需要添加定位，i才能使用element.style.left
+			var box = document.querySelector('.box');
+			var star = document.querySelector('.star');
+			var timer = setInterval(function() {
+				if (box.offsetLeft >= 100) {
+					clearInterval(timer);
+				}
+				box.style.left = box.offsetLeft + 1 + 'px';
+			}, 30);
+		</script>
+```
+
+#### 动画函数的简单封装
+
+```
+function animate(obj,target,times){	//自定义形参
+	var timer = setInterval(function() {
+		if (obj.offsetLeft >= target) {
+			clearInterval(timer);
+		}
+		obj.style.left = obj.offsetLeft + 1 + 'px';
+	}, times);
+}
+animate(box1,300,30);//传实参
+```
+
+优化方案1
+
+为了避免过多的元素同时运行一个函数，会造成开启了多个内存空间的问题，建议给：不同的元素指定不同的定时器
+```
+function animate(obj,target,times){	//自定义形参
+	//这里把元素封装到对象里：就比如：var obj = {}; obj.name = name;
+	obj.timer = setInterval(function() {
+		if (obj.offsetLeft >= target) {
+			clearInterval(obj.timer);
+		}
+		obj.style.left = obj.offsetLeft + 1 + 'px';
+	}, times);
+}
+animate(box1,300,30);//传实参
+```
+
+优化方案2 
+在原来的基础上会出现一个bug,如果是用按钮触发 动画函数，执行次数会叠加，所以我们必须让元素始终只有一次定时器在执行，先清除以前的定时器。
+```
+function animate(obj,target,times){	//自定义形参
+	//先清除原先的动画
+    clearInterval(obj.timer);
+	obj.timer = setInterval(function() {
+		if (obj.offsetLeft >= target) {
+			clearInterval(obj.timer);
+		}
+		obj.style.left = obj.offsetLeft + 1 + 'px';
+	}, times);
+}
+animate(box1,300,30);//传实参
+```
