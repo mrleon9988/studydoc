@@ -4482,3 +4482,103 @@ function animate(obj,target,times){	//自定义形参
 }
 animate(box1,300,30);//传实参
 ```
+
+优化方案3
+```
+	<body>
+		<div class="box"></div>
+		<button type="button" class="btn500">go500</button>
+		<button type="button" class="btn800">go800</button>
+	</body>
+	<script type="text/javascript">
+		var box = document.querySelector('div');
+
+		function animate(obj, target) {
+			clearInterval(obj.timer);
+			obj.timer = setInterval(function() {
+				//步长写到定时器里面
+				//把步长值改为整数Math.ceil,如果负值 取最小
+				var step = (target - obj.offsetLeft) / 10;
+				step = step > 0 ? Math.ceil(step) : Math.floor(step);
+				if (obj.offsetLeft == target) {
+					clearInterval(obj.timer);
+				}
+				//把每次加1 这个步长值改为一个慢慢变小的值,步长公式(目标值 - 当前的位置) / 10
+				obj.style.left = obj.offsetLeft + step + 'px';
+			}, 15);
+		}
+
+		var btn1 = document.querySelector('.btn500');
+		var btn2 = document.querySelector('.btn800');
+		btn1.addEventListener('click', function() {
+			animate(box, 500);
+		});
+		btn2.addEventListener('click', function() {
+			animate(box, 800);
+		});
+	</script>
+```
+
+
+#### 动画函数添加回调函数
+
+
+```
+	<script type="text/javascript">
+		var box = document.querySelector('div');
+
+		function animate(obj, target, callback) {
+			clearInterval(obj.timer);
+			obj.timer = setInterval(function() {
+				//步长写到定时器里面
+				//把步长值改为整数Math.ceil
+				var step = (target - obj.offsetLeft) / 10;
+				step = step > 0 ? Math.ceil(step) : Math.floor(step);
+				if (obj.offsetLeft == target) {
+					clearInterval(obj.timer);
+					//回调函数调用,一定是在上个函数执行完成后才执行
+					if (callback) { //判断有这个函数吗,有就执行,否则不执行
+						callback(); //调用回调函数
+					}
+				}
+				//把每次加1 这个步长值改为一个慢慢变小的值,步长公式(目标值 - 当前的位置) / 10
+				obj.style.left = obj.offsetLeft + step + 'px';
+			}, 15);
+		}
+
+		var btn1 = document.querySelector('.btn500');
+		var btn2 = document.querySelector('.btn800');
+		btn1.addEventListener('click', function() {
+			animate(box, 500);
+		});
+		btn2.addEventListener('click', function() {
+			//添加一个回调函数
+			animate(box, 800, function() {
+				animate(box, 500);//这个回调函数要执行的程序
+			});
+		});
+	</script>
+```
+
+#### 动画函数封装到单独的一个js文件引用
+
+```
+<script src="js/animate.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		//当鼠标经过sliderbar,FQ向左侧滑出→←
+		//当鼠标离开sliderbar,FQ向右侧滑出
+		var sliderbar = document.querySelector('.sliderbar');
+		var fq = document.querySelector('.FQ');
+		
+		sliderbar.addEventListener('mouseenter',function () {
+			animate(fq,-160,function () {
+				sliderbar.children[0].innerHTML = '→';
+			});
+		});
+		sliderbar.addEventListener('mouseleave',function () {
+			animate(fq,0,function () {
+				sliderbar.children[0].innerHTML = '←';
+			});
+		});
+	</script>
+```
