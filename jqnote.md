@@ -428,3 +428,89 @@ $('div').toggleClass('current');
 	</script>
 ```
 
+
+
+
+
+#### 类操作与className 区别
+
+| 操作方式        | 使用                               |
+| --------------- | ---------------------------------- |
+| 原生 javascript | 原生的会覆盖原有的类名             |
+| jquery          | 只针对指定的类名操作，不影响原有的 |
+
+
+
+
+
+#### jQuery 效果
+
+> [jquery API 查询网站]( http://jquery.cuishifeng.cn/ /) 
+
+jQuery 封装了很多动画效果，常见的如下：
+
+| 显示隐藏 | 滑动          | 淡入淡出     | 自定义动画 |
+| -------- | ------------- | ------------ | ---------- |
+| show()   | slideDown()   | fadeIn()     | animate()  |
+| hide()   | slideUp()     | fadeOut()    |            |
+| toggle() | slideToggle() | fadeToggle() |            |
+|          |               | fadeTo()     |            |
+
+
+
+##### 显示隐藏效果
+
+语法规范
+
+```
+show([speed,[easing],[fn]])
+//
+speed:三种预定速度之一的字符串("slow","normal", or "fast")或表示动画时长的毫秒数值(如：1000)
+
+fn:在动画完成时执行的函数，每个元素执行一次。
+
+[speed],[easing],[fn]Number/String,String,FunctionV1.4.3
+speed:三种预定速度之一的字符串("slow","normal", or "fast")或表示动画时长的毫秒数值(如：1000)
+
+easing:(Optional) 用来指定切换效果，默认是"swing"，可用参数"linear"
+
+fn:在动画完成时执行的函数，每个元素执行一次。
+```
+
+
+
+##### 谈入谈出效果
+
+> ## fadeTo([[speed],opacity,[easing],[fn]])
+>
+> **speed**:三种预定速度之一的字符串("slow","normal", or "fast")或表示动画时长的毫秒数值(如：1000)
+>
+> **opacity**:一个0至1之间表示透明度的数字。
+>
+> **fn**:在动画完成时执行的函数，每个元素执行一次。
+
+speed   
+
+opacity
+
+**这两个参数必须写。**
+
+
+
+
+
+##### 自定义动画
+
+> ## animate(params,[speed],[easing],[fn])
+>
+> **params**:一组包含作为动画属性和终值的样式属性和及其值的集合
+>
+> **speed**:三种预定速度之一的字符串("slow","normal", or "fast")或表示动画时长的毫秒数值(如：1000)
+>
+> **easing**:要使用的擦除效果的名称(需要插件支持).默认jQuery提供"linear" 和 "swing".
+>
+> **fn**:在动画完成时执行的函数，每个元素执行一次。
+
+params:想要更改的样式 属性，以对象形式传递，**必须写**
+
+属性名可以不用带引号。
