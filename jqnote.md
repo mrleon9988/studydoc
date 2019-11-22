@@ -514,3 +514,334 @@ opacity
 params:想要更改的样式 属性，以对象形式传递，**必须写**
 
 属性名可以不用带引号。
+
+
+
+
+
+### jQuery 的属性操作
+
+#### 1.设置或获取元素固有属性值 prop()
+
+> 固有属性就是元素本身自带的属性:,比如 <a> 里面就有个href 
+
+
+
+获取属性值
+
+> prop ("属性名")
+
+```
+$(function(){
+	 var a = $('a').prop('href');
+	console.log(a);
+})
+```
+
+设置属性值
+
+> prop("属性名","属性值")
+
+```
+$('a').prop('title','这是设置的值');
+```
+
+
+
+#### 2.设置或添加自定义属性
+
+> Attr('属性名')
+
+获取属性值
+
+```
+<div data-index=1>
+$('div').attr('index');	//获取index值
+```
+
+设置属性值
+
+```
+$('div').attr('index',2);	//后面跟一个数字就是设置值
+```
+
+
+
+#### 3.数据缓存
+
+> data()方法可以在指定的元素上存取数据,并不会修改DOM元素结构,只是存在了这个**元素的内存空间里**,一旦页面刷新,数据都将被移除.
+
+```
+<span>123</span>
+$('span').data('uname','mrleon');	//这里设置了一个数据
+console.lgo($('span').data('uname'));	//打印出的是'mrleon'值
+```
+
+
+
+#### 练习:复选框全选
+
+```
+		<script type="text/javascript">
+			$(function() {
+				//1.获得全选复选框,把全选 状态赋值给其它的按钮
+				$('.checkall').change(function() {
+					$('.s_checkbox,.checkall').prop('checked', $(this).prop('checked'));
+				})
+				$('.s_checkbox').change(function() {
+					if ($('.s_checkbox:checked').length === $('.s_checkbox').length) {
+						$('.checkall').prop('checked', true);
+					} else {
+						// 不选中全选按钮
+						$('.checkall').prop('checked', false);
+					}
+				})
+			})
+		</script>
+```
+
+
+
+### jQuery 内容文本值操作
+
+> 获取\设置元素内容 html()
+
+
+
+> 获取\设置元素文本内容 text()
+
+
+
+> 获取\设置表单值 val()
+
+获取方式 :括号里为空 ()
+
+设置方式:括号里添入参数 ('123')
+
+
+
+#### 练习:增减商品数量分析
+
+思路:
+
+首先声明一个变量,当我们点击 + 号 (increment),就让这个值 ++ 然后赋值给文本框 
+
+只能增加本商品的数量,就是当前+号的兄弟文本框 (itxt) 的值
+
+修改表单的值是 val() 方法
+
+这个变量初始值应该是这个文本框的值,在这个值的基础上++,要先获取表单的值
+
+当值为 1 时,就不能再继续执行递减
+
+```
+$(function() {
+	$('.increment').click(function() {
+		var n = $(this).siblings('.itxt').val();
+		n++;
+		$('.itxt').val(n);
+	})
+	$('.decrement').click(function() {
+		var n = $(this).siblings('.itxt').val();
+		if (n == 1) {
+			return false;
+		}
+		n--;
+		$(this).siblings('.itxt').val(n);
+	})
+})
+
+```
+
+
+
+#### 练习:修改商品小计的数量
+
+思路:
+
+每次点击 + 号 - 号,根据文本框的值 乘以 当前商品的价格 就是 商品的小计
+
+注意1:只能增加本商品的小计,就是当前商品的小计模块 (p-sum)
+
+修改普通元素的内容是text () 方法
+
+注意2:当前商品的价格,要把 ￥ 符号去掉,再乘 截取字符串用 **substr (1) 方法**
+
+ 
+
+```
+$(function() {
+	$('.increment').click(function() {
+		var n = $(this).siblings('.itxt').val();
+		n++;
+		$('.itxt').val(n);
+		var p = $(this).parent().siblings('.p-price').html().substr(1);
+		// p = p.substr(1);
+		// console.log(p);
+		//计算小计的总数
+		$(this).parent().siblings('.p-sum').html('￥' + p * n);
+	})
+	$('.decrement').click(function() {
+		var n = $(this).siblings('.itxt').val();
+		if (n == 1) {
+			return false;
+		}
+		n--;
+		$(this).siblings('.itxt').val(n);
+		var p = $(this).parent().siblings('.p-price').html().substr(1);
+		$(this).parent().siblings('.p-sum').html('￥' + p * n);
+	})
+	//.修改文本框的值,也要乘以商品的数量
+				$('.itxt').change(function () {
+					var n = $(this).val();
+					var p = $(this).parent().siblings('.p-price').html().substr(1);
+					$(this).parent().siblings('.p-sum').html('￥' + (p * n).toFixed(2));
+				})
+})
+
+```
+
+> parents ('选择器')  可以返回指定的或所有的祖先级元素
+
+
+
+**保留两小位数的方法:通过  to Fixed (2) 方法设置**
+
+
+
+
+
+### jQuery 的元素操作
+
+> 主要是遍历、创建、添加、删除元素操作
+
+
+
+#### 遍历元素
+
+
+
+##### 语法1：
+
+```
+$('div').each(function (设置索引号,设置元素对象名) {执行语句})
+```
+
+**index 索引号是每个元素的索引号，元素对象是 DOM 对象 ，需要转换为 jquery 对象 $(domele)**方法
+
+```
+$(function() {
+	// $("div").css("color", "red");
+	// 如果针对于同一类元素做不同操作，需要用到遍历元素（类似for，但是比for强大）
+	var sum = 0;
+	// 1. each() 方法遍历元素 
+	var arr = ["red", "green", "blue"];
+	$("div").each(function(i, domEle) {
+		// 回调函数第一个参数一定是索引号  可以自己指定索引号号名称
+		// console.log(index);
+		// console.log(i);
+		// 回调函数第二个参数一定是 dom元素对象 也是自己命名
+		// console.log(domEle);
+		// domEle.css("color"); dom对象没有css方法
+		$(domEle).css("color", arr[i]);
+		sum += parseInt($(domEle).text());
+	})
+	console.log(sum);
+
+```
+
+
+
+
+
+##### 语法2
+
+> $.each(object,function(index,element) { 执行语句;})
+>
+> 1. $.each () 方法可用于遍历任何对象。主要用于数据处理，比如数组、对象 
+> 2. 里面的函数有2个参数：index 是每个元素的索引号; element 遍历内容
+
+```
+	// 2. $.each() 方法遍历元素 主要用于遍历数据，处理数据
+	// $.each($("div"), function(i, ele) {
+	//     console.log(i);
+	//     console.log(ele);
+
+	// });
+	// $.each(arr, function(i, ele) {
+	//     console.log(i);
+	//     console.log(ele);
+
+
+	// })
+	$.each({
+		name: "andy",
+		age: 18
+	}, function(i, ele) {
+		console.log(i); // 输出的是 name age 属性名
+		console.log(ele); // 输出的是 andy  18 属性值
+	})
+})
+```
+
+
+
+#### 创建元素
+
+语法
+
+```
+$('<li></li>');	//动态创建了一个li 标签
+```
+
+
+
+##### 1.内部添加
+
+```
+elements.append('内容');
+```
+
+把内容添加目标的后面，类似原生的appendchild
+
+**生成后，与目标是 父 、子级**
+
+```
+var li = '<li>我是添加在后面的li</li>';
+var li2 = '<li>我是添加在前面的li</li>';
+$('ul').append(li);
+$('ul').prepend(li2);
+```
+
+
+
+
+
+##### 2.外部添加
+
+```
+element.after('内容')	//把内容添加到后面
+```
+
+```
+element.befor('内容')	//把内容添加到前面
+```
+
+**生成后，与目标是 同级**
+
+
+
+#### 删除元素
+
+```
+$('element').remove();	//可以删除匹配的目标元素
+```
+
+```
+$('element').empty()	//可以删除匹配元素里面的所有子节点、元素
+```
+
+```
+$('element').html("");	//括号里要加引号，代表赋值为空，作用和上一个相同 
+```
+
