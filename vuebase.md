@@ -439,3 +439,196 @@ methdos:是个对象,可以自定义一些方法
 
 
 
+## vue 动画效果
+
+  在vue 里动画分为两个阶段
+
+| 进入阶段   | 离开阶段       |
+| ---------- | -------------- |
+| v-enter    | 准备进入时间点 |
+| v-enter-to | 进入时间点     |
+| v-leave    | 准备离场时间点 |
+| v-leave-to | 离场时间点     |
+
+
+
+1.指定的动画元素，需要用：transition 语义标签包括起来，
+
+```
+<transition>
+	<h1>这是要动画的元素</h1>
+</transition>
+```
+
+2.需要在style里，添加动画css
+
+```
+<style>
+v-enter,
+v-leave-to{
+	opacity:0	//这是因为进入前，离开后的时间点，样式都是透明状态
+}
+
+v-enter-active,
+v-leave-active{
+	transition: all 0.3s ease;	//这是设置在进入、离场这两个时间点的动画效果
+}
+
+</style>
+```
+
+
+
+3、自定义类名
+
+在 transition 标签内，添加 name = 'my' 的自定义类名，那么将会替换 v 这个字符，
+
+```
+.my-enter,
+.my-leave-to{
+	opacity: 0;
+	transform: translateY(50px);
+}
+.my-enter-active,
+.my-leave-active{
+	transition: all 0.4s ease;
+}
+
+<input type="button" name="" id="" value="toggle" @click="flag2=!flag2" />
+<transition name="my">
+	<h1 v-show="flag2">这是一个标题2</h1>
+</transition>
+```
+
+
+
+### 使用第三方类实现动画
+
+> [animate]: https://github.com/daneden/animate.css
+>
+> <link href="https://cdn.bootcss.com/animate.css/3.7.2/animate.min.css" rel="stylesheet">
+
+
+
+| 进场类             | 离场类             |
+| ------------------ | ------------------ |
+| enter-active-class | leave-active-class |
+| 基本类名           | animated           |
+
+
+
+使用方法1：添加在 transition 标签里 enter-active-class、leave-active-class
+
+```
+<transition enter-active-class="基本类名 效果类名" leave-active-class="基本类名 效果类名">
+	<h1>这是一个动画标题 </h1>
+</transition>
+```
+
+
+
+使用方法2：基本类可以直接作用在目标元素身上
+
+```
+<transition enter-active-class=" 效果类名" leave-active-class="基本类名 效果类名">
+	<h1 class='基本类名'>这是一个动画标题 </h1>
+</transition>
+```
+
+
+
+使用方法3：设置进、离场时间
+
+```
+<transition enter-active-class=" 效果类名" leave-active-class="基本类名 效果类名" :duration='200'>
+	<h1 class='基本类名'>这是一个动画标题 </h1>
+</transition>
+```
+
+
+
+### 动画里的JavaScript 钩子函数
+
+可以在属性中声明 JavaScript 钩子
+
+```
+<transition
+  v-on:before-enter="beforeEnter"
+  v-on:enter="enter"
+  v-on:after-enter="afterEnter"
+  v-on:enter-cancelled="enterCancelled"
+
+  v-on:before-leave="beforeLeave"
+  v-on:leave="leave"
+  v-on:after-leave="afterLeave"
+  v-on:leave-cancelled="leaveCancelled"
+>
+  <!-- ... -->
+</transition>
+```
+
+```
+// ...
+methods: {
+  // --------
+  // 进入中
+  // --------
+
+  beforeEnter: function (el) {
+    // ...
+  },
+  // 当与 CSS 结合使用时
+  // 回调函数 done 是可选的
+  enter: function (el, done) {
+    // ...
+    done()
+  },
+  afterEnter: function (el) {
+    // ...
+  },
+  enterCancelled: function (el) {
+    // ...
+  },
+
+  // --------
+  // 离开时
+  // --------
+
+  beforeLeave: function (el) {
+    // ...
+  },
+  // 当与 CSS 结合使用时
+  // 回调函数 done 是可选的
+  leave: function (el, done) {
+    // ...
+    done()
+  },
+  afterLeave: function (el) {
+    // ...
+  },
+  // leaveCancelled 只用于 v-show 中
+  leaveCancelled: function (el) {
+    // ...
+  }
+}
+```
+
+这些钩子函数可以结合 CSS `transitions/animations` 使用，也可以单独使用。
+
+> 当只用 JavaScript 过渡的时候，**在 `enter` 和 `leave` 中必须使用 `done` 进行回调**。否则，它们将被同步调用，过渡会立即完成。
+
+
+
+### 给列表元素添加过渡效果注意
+
+那么怎么同时渲染整个列表，比如使用 `v-for` ？在这种场景中，使用 `<transition-group>` 组件，包括目标元素
+
+```
+<transition-group name="list">
+	<li v-for="item in list" :key="item.id">
+		{{item.id}}----{{item.name}}
+	</li>
+</transition-group>
+
+```
+
